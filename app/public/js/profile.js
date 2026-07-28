@@ -1,15 +1,6 @@
-// profile.js
-
-// ============================================
-// СОСТОЯНИЕ
-// ============================================
 let currentStatsMode = 'light';
 let selectedAvatar = null;
 let unlockedAvatars = [];
-
-// ============================================
-// ЗАГРУЗКА СТАТИСТИКИ
-// ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
     loadStats('light');
@@ -67,20 +58,14 @@ function updateStatCircle(circleId, valueId, percent) {
     const radius = 50;
     const circumference = 2 * Math.PI * radius;
 
-    // Ограничиваем процент от 0 до 100
     percent = Math.min(100, Math.max(0, percent || 0));
 
     const offset = circumference - (percent / 100) * circumference;
     circle.style.strokeDasharray = circumference;
     circle.style.strokeDashoffset = offset;
 
-    // Округляем только для отображения
     value.textContent = Math.round(percent) + '%';
 }
-
-// ============================================
-// ОТКРЫТИЕ ОТДЕЛЬНЫХ ОКОН
-// ============================================
 
 function openEditProfile() {
     document.getElementById('editProfileModal').style.display = 'flex';
@@ -92,7 +77,6 @@ function closeEditProfile() {
     document.body.style.overflow = 'auto';
 }
 
-// --- АВАТАР ---
 function openAvatarEditor() {
     document.getElementById('avatarEditorModal').style.display = 'flex';
     loadAvatars();
@@ -104,7 +88,7 @@ function closeAvatarEditor() {
 
 function saveAvatar() {
     if (!selectedAvatar) {
-        showToast('❌ Выберите аватар', 'error');
+        showToast('Выберите аватар', 'error');
         return;
     }
 
@@ -116,14 +100,14 @@ function saveAvatar() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            showToast('✅ Аватар обновлён!', 'success');
+            showToast('Аватар обновлён!', 'success');
             updateAllAvatars(selectedAvatar);
             closeAvatarEditor();
         } else {
-            showToast(data.error || '❌ Ошибка', 'error');
+            showToast(data.error || 'Ошибка', 'error');
         }
     })
-    .catch(() => showToast('❌ Ошибка сервера', 'error'));
+    .catch(() => showToast('Ошибка сервера', 'error'));
 }
 
 function updateAllAvatars(avatarName) {
@@ -137,7 +121,6 @@ function updateAllAvatars(avatarName) {
     if (headerAvatar) headerAvatar.src = '/images/avatars/' + avatarName;
 }
 
-// --- ЛОГИН ---
 function openUsernameEditor() {
     document.getElementById('usernameEditorModal').style.display = 'flex';
     document.getElementById('editUsername').value = document.getElementById('displayUsername').textContent;
@@ -154,25 +137,25 @@ function saveUsername() {
     const status = document.getElementById('editUsernameStatus');
 
     if (!username) {
-        status.innerHTML = '❌ Введите логин';
+        status.innerHTML = 'Введите логин';
         status.className = 'input-status error';
         return;
     }
 
     if (!/^[A-Za-z0-9]+$/.test(username)) {
-        status.innerHTML = '❌ Только латиница и цифры';
+        status.innerHTML = 'Только латиница и цифры';
         status.className = 'input-status error';
         return;
     }
 
-    status.innerHTML = '⏳ Проверка...';
+    status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
     fetch('/check-username?username=' + encodeURIComponent(username))
         .then(response => response.json())
         .then(data => {
             if (data.exists) {
-                status.innerHTML = '❌ Логин занят';
+                status.innerHTML = 'Логин занят';
                 status.className = 'input-status error';
                 return;
             }
@@ -185,25 +168,24 @@ function saveUsername() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    status.innerHTML = '✅ Логин обновлён!';
+                    status.innerHTML = 'Логин обновлён!';
                     status.className = 'input-status success';
                     document.getElementById('displayUsername').textContent = username;
                     document.querySelector('.profile-name .at-symbol').nextSibling.textContent = username;
                     document.querySelector('.user-info .username').textContent = username;
                     setTimeout(() => closeUsernameEditor(), 500);
                 } else {
-                    status.innerHTML = data.error || '❌ Ошибка';
+                    status.innerHTML = data.error || 'Ошибка';
                     status.className = 'input-status error';
                 }
             });
         })
         .catch(() => {
-            status.innerHTML = '⚠️ Ошибка проверки';
+            status.innerHTML = 'Ошибка проверки';
             status.className = 'input-status error';
         });
 }
 
-// --- ПАРОЛЬ ---
 function openPasswordEditor() {
     document.getElementById('passwordEditorModal').style.display = 'flex';
     document.getElementById('editOldPassword').value = '';
@@ -224,24 +206,24 @@ function savePassword() {
     const status = document.getElementById('editPasswordStatus');
 
     if (!oldPassword || !newPassword || !confirmPassword) {
-        status.innerHTML = '❌ Заполните все поля';
+        status.innerHTML = 'Заполните все поля';
         status.className = 'input-status error';
         return;
     }
 
     if (newPassword.length < 6) {
-        status.innerHTML = '❌ Пароль минимум 6 символов';
+        status.innerHTML = 'Пароль минимум 6 символов';
         status.className = 'input-status error';
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        status.innerHTML = '❌ Пароли не совпадают';
+        status.innerHTML = 'Пароли не совпадают';
         status.className = 'input-status error';
         return;
     }
 
-    status.innerHTML = '⏳ Проверка...';
+    status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
     fetch('/profile/change-password', {
@@ -252,28 +234,23 @@ function savePassword() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            status.innerHTML = '✅ Пароль изменён!';
+            status.innerHTML = 'Пароль изменён!';
             status.className = 'input-status success';
             setTimeout(() => closePasswordEditor(), 500);
         } else {
-            status.innerHTML = data.error || '❌ Ошибка';
+            status.innerHTML = data.error || 'Ошибка';
             status.className = 'input-status error';
         }
     })
     .catch(() => {
-        status.innerHTML = '⚠️ Ошибка сервера';
+        status.innerHTML = 'Ошибка сервера';
         status.className = 'input-status error';
     });
 }
 
-// --- EMAIL ---
 function bindEmail() {
     window.location.href = '/google/login';
 }
-
-// ============================================
-// АВАТАРЫ
-// ============================================
 
 function loadAvatars() {
     fetch('/profile/avatars')
@@ -284,7 +261,6 @@ function loadAvatars() {
             const grid = document.getElementById('avatarSelector');
             grid.innerHTML = '';
             
-            // Сортируем аватары по ID
             unlockedAvatars.sort((a, b) => a - b);
             
             unlockedAvatars.forEach(id => {
@@ -302,7 +278,6 @@ function loadAvatars() {
                 grid.appendChild(img);
             });
             
-            // Обновляем selectedAvatar
             if (currentAvatar) {
                 selectedAvatar = currentAvatar;
                 document.getElementById('editAvatar').src = '/images/avatars/' + currentAvatar;
@@ -320,7 +295,7 @@ function selectAvatar(el) {
 
 function unlockRandomAvatar() {
     const status = document.getElementById('avatarUnlockStatus');
-    status.innerHTML = '⏳ Проверка...';
+    status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
     fetch('/profile/unlock-avatar', {
@@ -348,14 +323,10 @@ function unlockRandomAvatar() {
         }
     })
     .catch(() => {
-        status.innerHTML = '⚠️ Ошибка сервера';
+        status.innerHTML = 'Ошибка сервера';
         status.className = 'input-status error';
     });
 }
-
-// ============================================
-// МОДАЛКИ ПОДТВЕРЖДЕНИЯ
-// ============================================
 
 function confirmLogout() {
     document.getElementById('confirmLogoutModal').style.display = 'flex';
@@ -396,10 +367,6 @@ function deleteAccount() {
     .catch(err => console.error('Ошибка удаления:', err));
 }
 
-// ============================================
-// TOAST
-// ============================================
-
 function showToast(message, type) {
     const existing = document.querySelector('.toast-notification');
     if (existing) existing.remove();
@@ -426,10 +393,6 @@ function showToast(message, type) {
     setTimeout(() => toast.remove(), 3000);
 }
 
-// ============================================
-// ESC
-// ============================================
-
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeEditProfile();
@@ -440,3 +403,69 @@ document.addEventListener('keydown', function(e) {
         closeConfirmLogout();
     }
 });
+
+function updateHeaderAfterAction() {
+    fetch('/api/user/stats')
+        .then(response => {
+            if (response.status === 401) {
+                showLoggedOutState();
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                showLoggedInState(data);
+            }
+        })
+        .catch(() => showLoggedOutState());
+}
+
+function showLoggedInState(data) {
+    document.querySelectorAll('#headerScore, #profileScore, #scoreText').forEach(el => {
+        if (el) el.textContent = data.score;
+    });
+    document.querySelectorAll('#headerStreak, #profileStreak, #streakText').forEach(el => {
+        if (el) el.textContent = data.streak;
+    });
+    document.querySelectorAll('.streak-icon').forEach(el => {
+        if (data.isActiveToday) {
+            el.classList.add('active');
+            el.classList.remove('inactive');
+        } else {
+            el.classList.remove('active');
+            el.classList.add('inactive');
+        }
+    });
+    const usernameEl = document.querySelector('.username');
+    if (usernameEl && data.username) usernameEl.textContent = data.username;
+    const avatarEl = document.querySelector('.user-avatar');
+    if (avatarEl && data.avatar) avatarEl.src = '/images/avatars/' + data.avatar;
+    const loginBtn = document.querySelector('.login-btn');
+    const userStats = document.querySelector('.user-stats');
+    const userInfo = document.querySelector('.user-info');
+    const avatarLink = document.querySelector('.user-avatar-link');
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (userStats) userStats.style.display = 'flex';
+    if (userInfo) userInfo.style.display = 'flex';
+    if (avatarLink) avatarLink.style.display = 'inline-block';
+}
+
+function showLoggedOutState() {
+    const loginBtn = document.querySelector('.login-btn');
+    const userStats = document.querySelector('.user-stats');
+    const userInfo = document.querySelector('.user-info');
+    const avatarLink = document.querySelector('.user-avatar-link');
+    const usernameEl = document.querySelector('.username');
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (userStats) userStats.style.display = 'none';
+    if (userInfo) userInfo.style.display = 'flex';
+    if (avatarLink) avatarLink.style.display = 'none';
+    if (usernameEl) usernameEl.textContent = '';
+    document.querySelectorAll('#headerScore, #profileScore, #scoreText').forEach(el => {
+        if (el) el.textContent = '0';
+    });
+    document.querySelectorAll('#headerStreak, #profileStreak, #streakText').forEach(el => {
+        if (el) el.textContent = '0';
+    });
+}
