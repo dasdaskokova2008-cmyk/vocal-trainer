@@ -154,6 +154,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     submitBtn.disabled = true;
     removeErrors('registerForm');
     
+    // 👇 ВЫБИРАЕМ РАНДОМНЫЙ АВАТАР ИЗ 63
     const randomAvatarId = Math.floor(Math.random() * 63) + 1;
     const avatarName = 'avatar_' + randomAvatarId + '.png';
     formData.append('avatar', avatarName);
@@ -177,6 +178,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         
         if (data.success) {
             updateHeader(data.username, data.score, data.place, data.streak);
+            // 👇 ПЕРЕДАЁМ АВАТАР В МОДАЛКУ
             showRegistrationSuccess(data.username, data.score, data.place, data.streak, avatarName);
             setTimeout(() => location.reload(), 500);
         } else if (data.error) {
@@ -189,31 +191,3 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         showError('registerForm', '❌ Ошибка сервера');
     });
 });
-
-function updateHeader(username, score, place, streak) {
-    const usernameSpan = document.querySelector('.user-info .username');
-    if (usernameSpan) usernameSpan.textContent = username;
-    
-    const scoreSpan = document.getElementById('headerScore');
-    if (scoreSpan) scoreSpan.textContent = score || 0;
-    
-    const placeSpan = document.getElementById('headerPlace');
-    if (placeSpan) placeSpan.textContent = place || 0;
-    
-    const streakSpan = document.getElementById('headerStreak');
-    if (streakSpan) streakSpan.textContent = streak || 0;
-    
-    const loginBtn = document.querySelector('.login-btn');
-    if (loginBtn) loginBtn.style.display = 'none';
-}
-
-function showRegistrationSuccess(username, score, place, streak, avatarName) {
-    const modal = document.getElementById('registrationSuccess');
-    if (modal) {
-        document.getElementById('newUsername').textContent = username;
-        modal.style.display = 'block';
-        setTimeout(() => {
-            closeAuth();
-        }, 2000);
-    }
-}

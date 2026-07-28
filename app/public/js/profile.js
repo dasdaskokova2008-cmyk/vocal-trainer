@@ -8,66 +8,6 @@ let selectedAvatar = null;
 let unlockedAvatars = [];
 
 // ============================================
-// ОБНОВЛЕНИЕ ШАПКИ ПРИ ВЫХОДЕ
-// ============================================
-
-function updateHeaderAfterAction() {
-    fetch('/api/user/stats')
-        .then(response => {
-            if (response.status === 401) {
-                showLoggedOutState();
-                return null;
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data) {
-                showLoggedInState(data);
-            }
-        })
-        .catch(() => showLoggedOutState());
-}
-
-function showLoggedInState(data) {
-    document.querySelectorAll('#headerScore, #profileScore, #scoreText').forEach(el => {
-        if (el) el.textContent = data.score;
-    });
-    document.querySelectorAll('#headerStreak, #profileStreak, #streakText').forEach(el => {
-        if (el) el.textContent = data.streak;
-    });
-    document.querySelectorAll('.streak-icon').forEach(el => {
-        if (data.isActiveToday) {
-            el.classList.add('active');
-            el.classList.remove('inactive');
-        } else {
-            el.classList.remove('active');
-            el.classList.add('inactive');
-        }
-    });
-    const loginBtn = document.querySelector('.login-btn');
-    const userStats = document.querySelector('.user-stats');
-    const avatarLink = document.querySelector('.user-avatar-link');
-    if (loginBtn) loginBtn.style.display = 'none';
-    if (userStats) userStats.style.display = 'flex';
-    if (avatarLink) avatarLink.style.display = 'inline-block';
-}
-
-function showLoggedOutState() {
-    const loginBtn = document.querySelector('.login-btn');
-    const userStats = document.querySelector('.user-stats');
-    const avatarLink = document.querySelector('.user-avatar-link');
-    if (loginBtn) loginBtn.style.display = 'inline-block';
-    if (userStats) userStats.style.display = 'none';
-    if (avatarLink) avatarLink.style.display = 'none';
-    document.querySelectorAll('#headerScore, #profileScore, #scoreText').forEach(el => {
-        if (el) el.textContent = '0';
-    });
-    document.querySelectorAll('#headerStreak, #profileStreak, #streakText').forEach(el => {
-        if (el) el.textContent = '0';
-    });
-}
-
-// ============================================
 // ЗАГРУЗКА СТАТИСТИКИ
 // ============================================
 
