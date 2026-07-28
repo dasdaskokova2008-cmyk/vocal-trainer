@@ -11,5 +11,8 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
+    services:
+    App\EventListener\CacheControlListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response }
             
