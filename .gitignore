@@ -1,0 +1,55 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> app secrets ###
+app/.env
+app/.env.dev
+app/.bash_history
+
+###> composer cache ###
+app/.composer/
+
+###> composer ###
+/composer.phar
+/composer.lock
+###< composer ###
+
+###> node ###
+node_modules/
+package-lock.json
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> docker local ###
+docker/php/php.ini
+docker/mysql/my.cnf
+docker-compose.override.yaml
+docker-compose.override.yml
+
+###> IDE ###
+/.idea/
+/.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+###> logs ###
+*.log
+/var/log/
+
+###> sessions ###
+/var/sessions/
+
+###> cache ###
+/.phpunit.cache
+/.php-cs-fixer.cache
+/.php-cs-fixer.php
