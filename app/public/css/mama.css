@@ -1,0 +1,160 @@
+.staff-note.hover .note-dot {
+    background: rgba(74, 158, 255, 0.3) !important;
+}
+
+.staff-note.hover .note-stem {
+    background: rgba(74, 158, 255, 0.3) !important;
+}
+
+.staff-note.hover .note-label {
+    display: none !important;
+}
+
+.staff-note.selected .note-dot {
+    background: #4a9eff !important;
+    box-shadow: 0 0 2.5vh rgba(74, 158, 255, 0.6) !important;
+}
+
+.staff-note.selected .note-stem {
+    background: #4a9eff !important;
+}
+
+.staff-note.selected .note-label {
+    background: #4a9eff !important;
+    color: white !important;
+    border-color: #4a9eff !important;
+}
+
+.interval-card-result.correct {
+    color: #00c853;
+}
+
+.interval-card-result.wrong {
+    color: #ff1744;
+}
+
+.interval-card-result .strikethrough {
+    text-decoration: line-through;
+    color: #ff1744;
+    opacity: 0.5;
+}
+
+.interval-card-result .correct-answer {
+    color: #00c853;
+    font-weight: 700;
+}
+
+.interval-card.card-correct {
+    border-color: #00c853 !important;
+    background: rgba(0, 200, 83, 0.04);
+}
+
+.interval-card.card-wrong {
+    border-color: #ff1744 !important;
+    background: rgba(255, 23, 68, 0.04);
+}
+
+.voice-arrow {
+    position: absolute;
+    left: 30%;
+    transform: translateX(-50%);
+    top: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    transition: top 0.08s linear;
+}
+
+.voice-arrow .arrow-head {
+    width: 3.5vh;
+    height: 3.5vh;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.75vh;
+    font-weight: 900;
+}
+
+.voice-arrow .arrow-head {
+    background: linear-gradient(135deg, #ff1744, #ff5252);
+    box-shadow: 0 0 2.5vh rgba(255, 23, 68, 0.7);
+}
+
+.voice-arrow.hit .arrow-head {
+    background: linear-gradient(135deg, #00E676, #69F0AE);
+    box-shadow: 0 0 3.75vh rgba(0, 230, 118, 0.9);
+}
+
+.moving-note {
+    position: absolute;
+    background: #4a9eff;
+    border-radius: 0.375vh;
+    z-index: 3;
+    box-shadow: 0 0 1.875vh rgba(74, 158, 255, 0.6);
+}
+
+.stat-item .stat-icon {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.streak-icon {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.staff-note.clickable {
+    cursor: pointer;
+}
+
+.staff-note .note-dot {
+    position: absolute;
+    width: 17px;
+    height: 13px;
+    border-radius: 50%;
+    background: #4a9eff;
+    transition: all 0.2s ease;
+}
+
+.staff-note .note-stem {
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    background: #4a9eff;
+    border-radius: 1px;
+}
+
+.ledger-line {
+    position: absolute;
+    height: 2px;
+    background: var(--text-muted);
+    opacity: 0.5;
+    z-index: 1;
+}
+/* Диезы и бемоли */
+.staff-note .accidental {
+    position: absolute;
+    font-size: 18px;
+    font-weight: 900;
+    z-index: 4;
+    user-select: none;
+    pointer-events: none;
+    font-family: 'Times New Roman', serif;
+    text-shadow: 0 0 8px rgba(74, 158, 255, 0.2);
+}
+
+.staff-note .accidental.sharp {
+    color: #4a9eff;
+}
+
+.staff-note .accidental.flat {
+    color: #6c5ce7;
+}

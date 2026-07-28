@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="learning-page">
+    <div class="learning-header">
+        <h1 class="page-title">
+            <img src="{{ asset('images/ear-icon.png') }}" alt="Слух" style="width: 3vh; height: 3vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+            Тренировка слуха
+        </h1>
+    </div>
+
+    <div class="learning-cards-area">
+        <div class="training-cards-three">
+            <div class="card-wrapper">
+                <a href="{{ path('training_hearing_note') }}" class="training-card training-card-hearing">
+                    <div class="card-content">
+                        <img src="{{ asset('images/notes-icon.png') }}" alt="Ноты" class="card-icon-img">
+                        <h2>
+                            <span class="card-title">Определение</span>
+                            <span class="card-title">нот</span>
+                        </h2>
+                        <p>Угадай ноту по звуку на нотном стане</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <a href="{{ path('training_hearing_intervals') }}" class="training-card training-card-hearing">
+                    <div class="card-content">
+                        <img src="{{ asset('images/chord-icon.png') }}" alt="Интервалы и аккорды" class="card-icon-img">
+                        <h2>
+                            <span class="card-title">Интервалы</span>
+                        </h2>
+                        <p>Учись различать интервалы на слух</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

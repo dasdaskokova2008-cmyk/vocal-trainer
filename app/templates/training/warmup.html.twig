@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Разминка - Vocal Trainer{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/warmup.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="warmup-page" id="warmupApp">
+    <div id="warmupIntro" class="warmup-intro" style="display: {% if skipIntro %}none{% else %}block{% endif %};">
+        <div class="warmup-text">
+            <h2>Почему важна распевка?</h2>
+            <p>
+            Распевка — это не просто традиция, а важный этап подготовки голоса. 
+            Она разогревает связки, улучшает гибкость голоса и помогает избежать 
+            перенапряжения. Даже профессионалы не пропускают этот шаг!
+        </p>
+        <p>
+            Всего 2 минуты — и ваш голос будет звучать увереннее, шире и ярче.
+        </p>
+        <div class="warmup-timer" id="introTimer">10</div>
+            <button class="btn-skip-intro" onclick="skipIntroForever()">
+                <img src="{{ asset('images/close-icon.png') }}" alt="Закрыть" class="btn-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                Больше не показывать
+            </button>
+        </div>
+    </div>
+
+    <div id="warmupCountdown" class="warmup-countdown" style="display: none;">
+        <div class="countdown-number" id="countdownNumber">3</div>
+    </div>
+
+    <div id="warmupVideo" class="warmup-video" style="display: none;">
+        <div class="video-wrapper">
+            <div class="video-progress">
+                <div class="video-progress-bar" id="progressBar"></div>
+            </div>
+
+            <video id="warmupPlayer" playsinline>
+                <source id="videoSource" src="" type="video/mp4">
+                Ваш браузер не поддерживает видео.
+            </video>
+
+            <div class="video-time" id="videoTime">0:00 / 0:00</div>
+
+            <div id="videoOverlay" class="video-overlay" onclick="handleOverlayClick()">
+                <div id="playIcon" class="play-icon">▶</div>
+                <div id="repeatIcon" class="repeat-icon hidden" onclick="event.stopPropagation(); restartVideo();">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="white">
+                        <path d="M17.65 6.35A7.958 7.958 0 0012 4C7.58 4 4.01 7.58 4.01 12S7.58 20 12 20c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div id="warmupResult" class="warmup-result" style="display: none;">
+            <div class="praise-message">
+                <h2>
+                    <img src="{{ asset('images/fire-icon.png') }}" alt="Отлично" class="result-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                    Отличная разминка! Ты готов к вокалу!
+                </h2>
+                <p>+10 очков за распевку!</p>
+            </div>
+            <div class="result-buttons">
+                <button id="continueBtn" class="btn-continue" onclick="continueToTraining()" style="display: block !important;">
+                    Продолжить →
+                </button>
+            </div>
+        </div>
+
+        <div class="video-footer">
+            <p class="video-credit">Видео взято с аккаунта <strong>Уроки Вокала от Саши</strong> на YouTube</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/results.js') }}"></script>
+    <script src="{{ asset('js/warmup.js') }}"></script>
+{% endblock %}

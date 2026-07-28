@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token('pitch_result') }}">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <title>{% block title %}Vocal Trainer{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="icon" href="{{ asset('images/note-icon.png') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-row header-row-main">
+                <div class="logo">
+                    <a href="{{ path('training') }}">
+                        <img src="{{ asset('images/note-icon.png') }}" alt="Ноты" class="logo-icon">
+                        Vocal Trainer
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        {% if app.user %}
+                            <span class="username">{{ app.user.username }}</span>
+                            <a href="{{ path('profile') }}" class="user-avatar-link">
+                                <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" alt="Профиль" class="user-avatar">
+                            </a>
+                        {% else %}
+                            <a href="#" class="login-btn" onclick="openAuth()">Войти</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-row header-row-secondary">
+                <div class="header-left">
+                    <button id="themeToggle" class="theme-toggle">
+                        <img id="themeIcon" src="{{ asset('images/sun-icon.png') }}" alt="Тема" class="theme-icon">
+                    </button>
+                </div>
+                <div class="header-right">
+                    {% if app.user %}
+                        <div class="user-stats">
+                            <div class="stat-item">
+                                <img src="{{ asset('images/fire-icon.png') }}" alt="Серия" class="stat-icon streak-icon {% if app.user.lastActivityDate and app.user.lastActivityDate|date('Y-m-d') == 'now'|date('Y-m-d') %}active{% endif %}" style="width: 3vh; height: 3vh; object-fit: contain;">
+                                <span class="stat-value" id="headerStreak">{{ app.user.streak ?? 0 }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <img src="{{ asset('images/target-icon.png') }}" alt="Очки" class="stat-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                                <span class="stat-value" id="headerScore">{{ app.user.score ?? 0 }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="container">
+            <div class="nav-items">
+                <a href="{{ path('training') }}" class="nav-item {% if app.request.get('_route') starts with 'training' %}active{% endif %}">
+                    <span class="nav-icon">
+                        <img src="{{ asset('images/book-icon.png') }}" alt="Обучение" class="nav-icon-img">
+                    </span>
+                    <span class="nav-label">Обучение</span>
+                </a>
+                <a href="{{ path('profile') }}" class="nav-item {% if app.request.get('_route') == 'profile' %}active{% endif %}">
+                    <span class="nav-icon">
+                        <img src="{{ asset('images/profile-icon.png') }}" alt="Профиль" class="nav-icon-img">
+                    </span>
+                    <span class="nav-label">Профиль</span>
+                </a>
+                <a href="{{ path('rating') }}" class="nav-item {% if app.request.get('_route') == 'rating' %}active{% endif %}">
+                    <span class="nav-icon">
+                        <img src="{{ asset('images/trophy-icon.png') }}" alt="Рейтинг" class="nav-icon-img">
+                    </span>
+                    <span class="nav-label">Рейтинг</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="authModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeAuth()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuth()">✕</button>
+            <h2 class="modal-title">
+                <img src="{{ asset('images/welcome-icon.png') }}" alt="Приветствие" class="welcome-icon">
+                Добро пожаловать!
+            </h2>
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login" onclick="switchTab('login')">Войти</button>
+                <button class="modal-tab" data-tab="register" onclick="switchTab('register')">Зарегистрироваться</button>
+            </div>
+
+            <form id="loginForm" class="modal-form" method="post" action="{{ path('login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="modal-input-group">
+                    <label>Email или логин</label>
+                    <input type="text" id="login_username" name="username" placeholder="Введите email или логин" required>
+                </div>
+                <div class="modal-input-group">
+                    <label>Пароль</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login_password" name="password" placeholder="Введите пароль" required class="password-input">
+                        <button type="button" onclick="togglePassword('login_password', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                        </button>
+                    </div>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" onclick="alert('Функция восстановления пароля будет доступна позже!'); return false;">
+                        Забыли пароль?
+                    </a>
+                </div>
+                <button type="submit" class="modal-btn-primary">Войти</button>
+            </form>
+
+            <div id="loginSuccessModal" class="modal" style="display: none;">
+                <div class="modal-overlay" onclick="closeLoginSuccess()"></div>
+                <div class="modal-content login-success-content">
+                    <div class="login-success-icon">
+                        <img src="{{ asset('images/welcome-icon.png') }}" alt="Успех">
+                    </div>
+                    <h2 class="login-success-title">Вы успешно вошли!</h2>
+                    <p class="login-success-subtitle">Хороших занятий!</p>
+                    <button onclick="closeLoginSuccess()" class="modal-btn-primary login-success-btn">
+                        Продолжить
+                    </button>
+                </div>
+            </div>
+
+            <form id="registerForm" class="modal-form" style="display: none;" method="post" action="{{ path('register') }}">
+                <div class="modal-input-group">
+                    <label>Логин <span class="required-star">*</span></label>
+                    <input type="text" id="register_username" name="username" placeholder="Придумайте логин" pattern="[A-Za-z0-9]+" value="{{ generated_username|default('') }}">
+                    <div id="usernameStatus" class="input-status"></div>
+                    <small>Только английские буквы и цифры. Можно пропустить</small>
+                </div>
+                <div class="modal-input-group">
+                    <label>Пароль <span class="required-star">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="register_password" name="password" placeholder="Придумайте пароль" required class="password-input">
+                        <button type="button" onclick="togglePassword('register_password', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                        </button>
+                    </div>
+                    <div id="passwordStatus" class="input-status"></div>
+                </div>
+                <div class="modal-input-group">
+                    <label>Повторите пароль <span class="required-star">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="register_password_repeat" name="password_repeat" placeholder="Повторите пароль" required class="password-input">
+                        <button type="button" onclick="togglePassword('register_password_repeat', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                        </button>
+                    </div>
+                    <div id="passwordRepeatStatus" class="input-status"></div>
+                </div>
+                <button type="submit" class="modal-btn-primary">Зарегистрироваться</button>
+            </form>
+
+            <div id="registrationSuccess" class="registration-success" style="display: none;">
+                <div class="registration-success-icon">
+                    <img src="{{ asset('images/welcome-icon.png') }}" alt="Успех">
+                </div>
+                <h3 class="registration-success-title">Регистрация успешна!</h3>
+                <p class="registration-success-text">
+                    Вы вошли как <strong id="newUsername"></strong>
+                </p>
+                <p class="registration-success-hint">
+                    Чтобы не потерять аккаунт, привяжите его через Google
+                </p>
+                <div class="registration-success-buttons">
+                    <button onclick="closeAuthAndRefresh()" class="btn-understand">Понятно</button>
+                    <button onclick="closeAuthAndRefresh()" class="modal-btn-google btn-skip">
+                        <img src="{{ asset('images/google-icon.svg') }}" alt="Google" width="18" height="18">
+                        Пропустить
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-divider">
+                <span>или</span>
+            </div>
+
+            <a href="{{ path('google_start') }}" class="modal-btn-google">
+                <img src="{{ asset('images/google-icon.svg') }}" alt="Google" width="20" height="20">
+                Зарегистрироваться через Google 
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/auth-forms.js') }}"></script>
+    <script src="{{ asset('js/theme.js') }}"></script>
+    <script src="{{ asset('js/modal-helpers.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,228 @@
+/* ========================================
+   ТРЕНИРОВКА СЛУХА (hearing/*)
+   ======================================== */
+
+/* ---- Кликабельный нотный стан ---- */
+.staff-clickable {
+    cursor: pointer;
+}
+
+.staff-zone {
+    position: absolute;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.staff-zone:hover {
+    background: rgba(74, 158, 255, 0.15);
+}
+
+.staff-zone:active {
+    background: rgba(74, 158, 255, 0.3);
+}
+
+/* ---- Выбранная нота (синяя) ---- */
+.staff-note.selected .note-dot {
+    background: #4a9eff !important;
+    box-shadow: 0 0 20px rgba(74, 158, 255, 0.6) !important;
+}
+
+.staff-note.selected .note-label {
+    background: #4a9eff !important;
+    color: white !important;
+    border-color: #4a9eff !important;
+}
+
+/* ---- Подсветка при наведении (полупрозрачная синяя) ---- */
+.staff-note.hover .note-dot {
+    background: rgba(74, 158, 255, 0.3) !important;
+    box-shadow: none !important;
+}
+
+.staff-note.hover .note-label {
+    display: none !important;
+}
+
+/* ---- Игровая область ---- */
+.hearing-game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hearing-hint {
+    font-size: clamp(16px, 2.2vh, 28px);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 0.5vh 0;
+    min-height: 4vh;
+}
+
+/* ---- Кнопка воспроизведения (круглая с динамиком) ---- */
+.btn-play-note {
+    width: clamp(56px, 8vh, 80px);
+    height: clamp(56px, 8vh, 80px);
+    font-size: clamp(28px, 4vh, 42px);
+    background: linear-gradient(135deg, #4a9eff, #6c5ce7);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 1vh auto;
+}
+
+.btn-play-note:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 30px rgba(74, 158, 255, 0.6);
+}
+
+.btn-play-note:active {
+    transform: scale(0.95);
+}
+
+/* ---- Кнопка "Ответить" ---- */
+.btn-submit-answer {
+    padding: 1.2vh 4vh;
+    font-size: clamp(16px, 2vh, 24px);
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #00c853, #00e676);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+}
+
+.btn-submit-answer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 200, 83, 0.5);
+}
+
+.btn-submit-answer:active {
+    transform: scale(0.95);
+}
+
+/* ---- Пианино ---- */
+.piano-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8vh;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.piano-hint {
+    font-size: clamp(13px, 1.6vh, 18px);
+    color: var(--text-muted);
+    text-align: center;
+    margin: 0;
+}
+
+.piano {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: clamp(140px, 20vh, 260px);
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- Белые клавиши ---- */
+.piano .key.white {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 0.8vh;
+    font-size: clamp(10px, 1.2vh, 14px);
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-bottom: 3px solid var(--border-color);
+    min-height: 0;
+}
+
+.piano .key.white:hover {
+    background: rgba(74, 158, 255, 0.08);
+}
+
+.piano .key.white:active,
+.piano .key.white.active {
+    background: rgba(74, 158, 255, 0.25);
+    transform: translateY(3px);
+    border-bottom-width: 1px;
+}
+
+/* ---- Чёрные клавиши ---- */
+.piano .key.black {
+    position: absolute;
+    top: 0;
+    height: 55%;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0 0 4px 4px;
+    color: #ccc;
+    font-size: clamp(7px, 0.8vh, 10px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 6px;
+    z-index: 2;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+    /* 👇 УБИРАЕМ transform: translateX(-50%) */
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.piano .key.black:hover {
+    background: #333;
+}
+
+.piano .key.black:active,
+.piano .key.black.active {
+    background: #555;
+    transform: translateY(2px); /* 👈 ТОЛЬКО ВНИЗ, без translateX */
+}
+
+
+
+/* ---- Адаптация для мобильных ---- */
+@media (max-width: 600px) {
+    .piano .key.white {
+        font-size: 8px;
+        padding-bottom: 4px;
+    }
+    .piano-hint {
+        font-size: 12px;
+    }
+    .hearing-hint {
+        font-size: 14px;
+    }
+}
+

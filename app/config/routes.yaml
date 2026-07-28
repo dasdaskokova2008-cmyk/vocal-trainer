@@ -1,0 +1,135 @@
+# Главная страница
+index:
+    path: /
+    controller: App\Controller\TrainingController::index
+
+# Тренировки
+training:
+    path: /training
+    controller: App\Controller\TrainingController::index
+training_hearing:
+    path: /training/hearing
+    controller: App\Controller\TrainingController::hearing
+training_voice:
+    path: /training/voice
+    controller: App\Controller\TrainingController::voice
+
+# Профиль и рейтинг
+profile:
+    path: /profile
+    controller: App\Controller\ProfileController::index
+rating:
+    path: /rating
+    controller: App\Controller\RatingController::index
+
+# АВТОРИЗАЦИЯ 
+login:
+    path: /login
+    controller: App\Controller\AuthController::login
+logout:
+    path: /logout
+    controller: App\Controller\AuthController::logout
+register:
+    path: /register
+    controller: App\Controller\AuthController::register
+
+# GOOGLE 
+google_start:
+    path: /google/login
+    controller: App\Controller\AuthController::googleStart
+google_callback:
+    path: /google/callback
+    controller: App\Controller\AuthController::googleCallback
+google_complete:
+    path: /google/complete
+    controller: App\Controller\AuthController::googleComplete
+
+# Проверка логина
+check_username:
+    path: /check-username
+    controller: App\Controller\TrainingController::checkUsername
+
+# Тренировка голоса 
+training_warmup:
+    path: /training/warmup
+    controller: App\Controller\TrainingController::warmup
+training_voice_pitch:
+    path: /training/voice/pitch
+    controller: App\Controller\TrainingController::voicePitch
+training_voice_melody:
+    path: /training/voice/melody
+    controller: App\Controller\TrainingController::voiceMelody
+
+# ТРЕНИРОВКА ТОЧНОСТИ ПОПАДАНИЯ В НОТУ
+training_pitch:
+    path: /training/pitch
+    controller: App\Controller\TrainingController::pitch
+training_pitch_result:
+    path: /training/pitch/result
+    controller: App\Controller\TrainingController::savePitchResult
+    methods: POST
+training_pitch_stats:
+    path: /training/pitch/stats
+    controller: App\Controller\TrainingController::getPitchStats
+
+# ТРЕНИРОВКА СЛУХА
+training_hearing_note:
+    path: /training/hearing/note
+    controller: App\Controller\TrainingController::hearingNote
+
+# ТРЕНИРОВКА СЛУХА - ИНТЕРВАЛЫ
+training_hearing_intervals:
+    path: /training/hearing/intervals
+    controller: App\Controller\TrainingController::intervals
+
+# ============================================
+# ПРОФИЛЬ (НОВЫЕ МАРШРУТЫ)
+# ============================================
+
+# Профиль - статистика
+profile_stats:
+    path: /profile/stats
+    controller: App\Controller\ProfileController::getStats
+    methods: GET
+
+# Профиль - обновление
+profile_update:
+    path: /profile/update
+    controller: App\Controller\ProfileController::update
+    methods: POST
+
+# Профиль - смена пароля
+profile_change_password:
+    path: /profile/change-password
+    controller: App\Controller\ProfileController::changePassword
+    methods: POST
+
+# Профиль - привязка email
+profile_bind_email:
+    path: /profile/bind-email
+    controller: App\Controller\ProfileController::bindEmail
+    methods: POST
+
+# Профиль - удаление аккаунта
+profile_delete:
+    path: /profile/delete
+    controller: App\Controller\ProfileController::deleteAccount
+    methods: POST
+
+# Профиль - список аватаров
+profile_avatars:
+    path: /profile/avatars
+    controller: App\Controller\ProfileController::getAvatars
+    methods: GET
+
+# Профиль - открыть новый аватар
+profile_unlock_avatar:
+    path: /profile/unlock-avatar
+    controller: App\Controller\ProfileController::unlockAvatar
+    methods: POST
+
+# API - статистика пользователя
+api_user_stats:
+    path: /api/user/stats
+    controller: App\Controller\TrainingController::getUserStats
+    methods: GET

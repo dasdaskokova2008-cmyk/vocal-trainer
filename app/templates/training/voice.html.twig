@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Тренировка голоса - Vocal Trainer{% endblock %}
+
+{% block content %}
+<div class="learning-page">
+    <div class="learning-header">
+        <h1 class="page-title">
+            <img src="{{ asset('images/voice-icon.png') }}" alt="Голос" class="page-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+            Тренировка голоса
+        </h1>
+    </div>
+
+    <div class="learning-cards-area">
+        <div class="training-cards-three">
+            <div class="card-wrapper">
+                <a href="{{ path('training_warmup') }}" class="training-card training-card-voice">
+                    <div class="card-content">
+                        <img src="{{ asset('images/warmup-icon.png') }}" alt="Разминка" class="card-icon-img">
+                        <h2>
+                            <span class="card-title">Разминка</span>
+                        </h2>
+                        <p>Подготовь голосовые связки к тренировке</p>
+                        <div class="card-arrow">→</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card-wrapper">
+                <a href="{{ path('training_pitch') }}" class="training-card training-card-voice">
+                    <div class="card-content">
+                        <img src="{{ asset('images/pitch-icon.png') }}" alt="Точность звука" class="card-icon-img">
+                        <h2>
+                            <span class="card-title">Точность</span>
+                            <span class="card-title">попадания</span>
+                            <span class="card-title">в ноту</span>
+                        </h2>
+                        <p>Развивай чистоту интонации и попадание в ноты</p>
+                        <div class="card-arrow">→</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

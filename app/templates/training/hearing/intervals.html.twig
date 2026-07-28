@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="training-container">
+    <div id="setupScreen" class="setup-screen">
+        <div class="setup-group">
+            <label class="setup-label">Сколько интервалов хотите угадать?</label>
+            <div class="range-container">
+                <span class="range-value" id="testCountLabel">10</span>
+                <input type="range" id="testCountRange" min="5" max="15" value="10" step="1"
+                       oninput="document.getElementById('testCountLabel').textContent = this.value">
+                <div class="range-labels">
+                    <span>5</span>
+                    <span>15</span>
+                </div>
+            </div>
+        </div>
+        
+        <p class="difficulty-subtitle">Выберите сложность</p>
+        
+        <div class="difficulty-cards-wrapper">
+            <div class="difficulty-cards-grid">
+                <div class="card-wrapper" onclick="selectIntervalDifficulty('easy')">
+                    <div class="training-card training-card-easy">
+                        <div class="card-content">
+                            <img src="{{ asset('images/easy-icon.png') }}" alt="Лёгкая" class="card-icon-img">
+                            <h2>
+                                <span class="card-title">Лёгкая</span>
+                                <span class="card-title">версия</span>
+                            </h2>
+                            <p>С нотным станом и подсказками</p>
+                            <div class="card-arrow">→</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-wrapper" onclick="selectIntervalDifficulty('hard')">
+                    <div class="training-card training-card-hard">
+                        <div class="card-content">
+                            <img src="{{ asset('images/hard-icon.png') }}" alt="Сложная" class="card-icon-img">
+                            <h2>
+                                <span class="card-title">Сложная</span>
+                                <span class="card-title">версия</span>
+                            </h2>
+                            <p>Только на слух, без стана</p>
+                            <div class="card-arrow">→</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <button onclick="openIntervalTheory()" class="btn-theory" style="padding: 1.2vh 4vh; font-size: clamp(16px, 2vh, 24px); font-weight: 700; color: white; background: linear-gradient(135deg, #6c5ce7, #4a9eff); border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);">
+                <img src="{{ asset('images/book-icon.png') }}" alt="Теория" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+                Теория интервалов
+            </button>
+        </div>
+    </div>
+    
+    <div id="gameScreen" class="game-screen" style="display: none;">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text" id="progressText">0 из 10</span>
+            <span class="score-text" id="scoreText">
+                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                0 баллов
+            </span>
+        </div>
+
+        <div class="intervals-game-area">
+            <div class="hearing-hint" id="intervalsHint">
+                Послушай интервал и определи его
+            </div>
+
+            <div id="intervalsStaff" class="staff-container staff-clickable">
+                <div class="staff-clef-block">
+                    <div class="staff-lines-clef">
+                        <div class="staff-line" style="top: 10px;"></div>
+                        <div class="staff-line" style="top: 30px;"></div>
+                        <div class="staff-line" style="top: 50px;"></div>
+                        <div class="staff-line" style="top: 70px;"></div>
+                        <div class="staff-line" style="top: 90px;"></div>
+                    </div>
+                    <div class="treble-clef">𝄞</div>
+                </div>
+                <div class="staff-notes-scroll" id="intervalsStaffScroll">
+                    <div class="staff-wrapper-scroll" id="intervalsStaffWrapper">
+                        <div class="staff-lines">
+                            <div class="staff-line" style="top: 0px;"></div>
+                            <div class="staff-line" style="top: 20px;"></div>
+                            <div class="staff-line" style="top: 40px;"></div>
+                            <div class="staff-line" style="top: 60px;"></div>
+                            <div class="staff-line" style="top: 80px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-play-note" id="playIntervalBtn" onclick="playCurrentInterval()">
+                <img src="{{ asset('images/speaker-icon.png') }}" alt="Воспроизвести" style="width: 4vh; height: 4vh; object-fit: contain;">
+            </button>
+
+            <div class="interval-grid">
+                <div class="interval-card" id="cardShort">
+                    <div class="interval-card-header">
+                        <div class="interval-card-icon-wrapper" style="background: linear-gradient(135deg, #4a9eff, #6c5ce7);">
+                            <span class="interval-card-icon">📝</span>
+                        </div>
+                        <div>
+                            <span class="interval-card-label">Сокращение</span>
+                            <span class="interval-card-hint">выбери вариант</span>
+                        </div>
+                    </div>
+                    <select id="answerShort" class="interval-select"></select>
+                    <div class="interval-card-result" id="resultShort"></div>
+                </div>
+                
+                <div class="interval-card" id="cardName">
+                    <div class="interval-card-header">
+                        <div class="interval-card-icon-wrapper" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <span class="interval-card-icon">📖</span>
+                        </div>
+                        <div>
+                            <span class="interval-card-label">Название</span>
+                            <span class="interval-card-hint">выбери вариант</span>
+                        </div>
+                    </div>
+                    <select id="answerName" class="interval-select"></select>
+                    <div class="interval-card-result" id="resultName"></div>
+                </div>
+                
+                <div class="interval-card" id="cardTones">
+                    <div class="interval-card-header">
+                        <div class="interval-card-icon-wrapper" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                            <span class="interval-card-icon">🎵</span>
+                        </div>
+                        <div>
+                            <span class="interval-card-label">Тоны</span>
+                            <span class="interval-card-hint">выбери вариант</span>
+                        </div>
+                    </div>
+                    <select id="answerTones" class="interval-select"></select>
+                    <div class="interval-card-result" id="resultTones"></div>
+                </div>
+                
+                <div class="interval-card" id="cardSteps">
+                    <div class="interval-card-header">
+                        <div class="interval-card-icon-wrapper" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                            <span class="interval-card-icon">📊</span>
+                        </div>
+                        <div>
+                            <span class="interval-card-label">Ступени</span>
+                            <span class="interval-card-hint">выбери вариант</span>
+                        </div>
+                    </div>
+                    <select id="answerSteps" class="interval-select"></select>
+                    <div class="interval-card-result" id="resultSteps"></div>
+                </div>
+            </div>
+
+            <button class="btn-submit-answer" id="submitIntervalBtn" onclick="submitIntervalAnswer()">
+                Ответить
+            </button>
+
+            <div id="intervalFeedback" class="result-feedback" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="resultScreen" class="result-screen" style="display: none;">
+        <div class="result-header">
+            <h2 class="result-title">
+                <img src="{{ asset('images/trophy-icon.png') }}" alt="Завершено" style="width: 4vh; height: 4vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+                Тренировка завершена!
+            </h2>
+        </div>
+        
+        <div class="accuracy-section">
+            <div class="accuracy-label">Точность определения интервалов:</div>
+            <div class="progress-circle-container">
+                <svg class="progress-circle" viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6c5ce7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
+                    <circle class="progress-circle-fill" cx="100" cy="100" r="90" 
+                            id="progressCircleFill"
+                            stroke-dasharray="565.486" 
+                            stroke-dashoffset="565.486"></circle>
+                </svg>
+                <div class="progress-circle-text">
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="motivation-box">
+            <p class="motivation-text" id="motivationText">Загрузка...</p>
+        </div>
+        
+        <button class="btn-continue" onclick="continueIntervalTraining()">
+            Продолжить
+        </button>
+    </div>
+</div>
+
+<div id="theoryModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeIntervalTheory()"></div>
+    <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+        <button class="modal-close" onclick="closeIntervalTheory()">✕</button>
+        <h2 class="modal-title">
+            <img src="{{ asset('images/book-icon.png') }}" alt="Теория" style="width: 4vh; height: 4vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+            Теория интервалов
+        </h2>
+        <div id="theoryContent"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/notes.js') }}"></script>
+    <script src="{{ asset('js/intervals-data.js') }}"></script>
+    <script src="{{ asset('js/training-intervals.js') }}"></script>
+    <script src="{{ asset('js/scoring.js') }}"></script>
+    <script src="{{ asset('js/results.js') }}"></script>
+    <script src="{{ asset('js/motivations.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,296 @@
+.warmup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 20px;
+    text-align: center;
+}
+
+.warmup-intro {
+    max-width: 600px;
+    padding: 40px;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.warmup-intro h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: var(--accent-primary);
+}
+
+.warmup-intro p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.warmup-timer {
+    font-size: 48px;
+    font-weight: 800;
+    margin-top: 20px;
+    color: var(--accent-primary);
+}
+
+.btn-skip-intro {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 2px solid var(--text-muted);
+    border-radius: 30px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-skip-intro:hover {
+    background: var(--border-color);
+    border-color: var(--text-secondary);
+}
+
+.warmup-countdown {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.countdown-number {
+    font-size: 120px;
+    font-weight: 900;
+    color: var(--accent-primary);
+    animation: countdownPulse 1s ease infinite;
+}
+
+@keyframes countdownPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.warmup-video {
+    display: none;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.video-wrapper {
+    position: relative;
+    width: min(100%, calc(60vh * 1.777));
+    margin: 0 auto;
+    background: #0a0a0a;
+    border-radius: max(16px, 1.5vw);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(74, 158, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.video-wrapper video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    aspect-ratio: 16 / 9;
+    background: #0a0a0a;
+    object-fit: contain;
+}
+
+.video-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 20;
+}
+
+.video-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+    transition: width 0.3s ease;
+    border-radius: 0 2px 2px 0;
+}
+
+.video-time {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 12px;
+    border-radius: 8px;
+    z-index: 15;
+    backdrop-filter: blur(4px);
+    font-variant-numeric: tabular-nums;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.video-overlay:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.play-icon,
+.repeat-icon {
+    width: clamp(52px, 8vh, 80px);
+    height: clamp(52px, 8vh, 80px);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.play-icon {
+    font-size: clamp(24px, 4vh, 38px);
+    color: #fff;
+}
+
+.repeat-icon {
+    font-size: clamp(28px, 5vh, 42px);
+    color: #fff;
+}
+
+.play-icon:hover,
+.repeat-icon:hover {
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.play-icon.hidden,
+.repeat-icon.hidden {
+    display: none;
+}
+.video-footer {
+    text-align: center;
+    padding: clamp(6px, 1vh, 12px) 0 clamp(4px, 0.6vh, 6px);
+}
+
+.video-credit {
+    font-size: clamp(11px, 1.2vh, 14px);
+    color: var(--text-muted);
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.video-credit strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.btn-continue {
+    display: block !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 20px auto !important;
+    padding: 14px 30px !important;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 30px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 999 !important;
+    position: relative !important;
+}
+
+.btn-continue:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 8px 30px rgba(74, 158, 255, 0.4) !important;
+}
+
+.praise-message {
+    display: none;
+    padding: 20px;
+    text-align: center;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 16px;
+    margin: 10px 20px;
+}
+
+.praise-message h2 {
+    color: var(--success);
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.praise-message p {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.warmup-result {
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.warmup-result .praise-message {
+    display: block;
+    margin-bottom: 20px;
+    padding: 0;
+    background: none;
+}
+
+.warmup-result .praise-message h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: var(--success);
+}
+
+.warmup-result .praise-message p {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.result-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.result-buttons .btn-repeat,
+.result-buttons .btn-continue {
+    margin: 0;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}

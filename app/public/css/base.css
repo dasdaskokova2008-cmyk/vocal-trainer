@@ -1,0 +1,293 @@
+:root {
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555555;
+    --text-muted: #888888;
+    --accent-primary: #4a9eff;
+    --accent-secondary: #6c5ce7;
+    --success: #00c853;
+    --danger: #ff1744;
+    --border-color: #e0e0e0;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 25px 60px rgba(74, 158, 255, 0.35);
+    --nav-bg: #ffffff;
+    --header-bg: #ffffff;
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    --card-shadow-hover: 0 30px 70px rgba(74, 158, 255, 0.5);
+    --card-border-color: rgba(0, 0, 0, 0.15);
+    --card-border-hover: rgba(0, 0, 0, 0.3);
+    --icon-glow-color: rgba(0, 0, 0, 0.4);
+    --icon-glow-size: 0 0 20px;
+    --scrollbar-track: #f5f7fa;
+    --scrollbar-thumb: #e0e0e0;}
+
+[data-theme="dark"] {
+    --bg-primary: #0f0c29;
+    --bg-secondary: #1a1a2e;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --text-muted: #777777;
+    --accent-primary: #4a9eff;
+    --accent-secondary: #6c5ce7;
+    --success: #00e676;
+    --danger: #ff1744;
+    --border-color: #2a2a4a;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 25px 60px rgba(74, 158, 255, 0.5);
+    --nav-bg: #1a1a2e;
+    --header-bg: #0f0c29;
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+    --card-shadow-hover: 0 30px 70px rgba(74, 158, 255, 0.6);
+    --card-border-color: rgba(255, 255, 255, 0.4);
+    --card-border-hover: rgba(255, 255, 255, 0.7);
+    --icon-glow-color: rgba(255, 255, 255, 0.9);
+    --icon-glow-size: 0 0 28px;
+    --scrollbar-track: #0f0c29;
+    --scrollbar-thumb: #2a2a4a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    padding: 5px 0 5px;
+    display: flex;
+    flex-direction: column;
+    height: 78vh;
+    max-height: 78vh;
+    min-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.main-content .container {
+    max-width: 100%;
+    padding: 0 40px;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+    * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--bg-primary);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-input {
+    padding-right: 45px;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-muted);
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: var(--accent-primary);
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.forgot-password a {
+    color: var(--text-muted);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.login-success-content {
+    max-width: 420px;
+    text-align: center;
+}
+
+.login-success-icon {
+    margin-bottom: 16px;
+}
+
+.login-success-icon img {
+    width: 72px;
+    height: 72px;
+    filter: drop-shadow(0 0 20px rgba(0, 200, 83, 0.5));
+}
+
+.login-success-title {
+    color: var(--text-primary);
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.login-success-subtitle {
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.login-success-btn {
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.registration-success {
+    display: none;
+    text-align: center;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, rgba(0, 200, 83, 0.12), rgba(74, 158, 255, 0.08));
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 2px solid #00c853;
+}
+
+.registration-success-icon {
+    margin-bottom: 8px;
+}
+
+.registration-success-icon img {
+    width: 56px;
+    height: 56px;
+    filter: drop-shadow(0 0 15px rgba(0, 200, 83, 0.4));
+}
+
+.registration-success-title {
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    font-size: 22px;
+}
+
+.registration-success-text {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.registration-success-text strong {
+    color: var(--accent-primary);
+    font-size: 18px;
+}
+
+.registration-success-hint {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 18px;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.registration-success-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-understand {
+    flex: 1;
+    padding: 12px 24px;
+    font-size: 14px;
+    min-width: 100px;
+    background: transparent;
+    color: #00c853;
+    border: 2px solid #00c853;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-understand:hover {
+    background: rgba(0, 200, 83, 0.1);
+}
+
+.btn-skip {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 14px;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.streak-icon {
+    font-size: 18px;
+    transition: all 0.3s ease;
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.streak-icon.active {
+    opacity: 1;
+    filter: grayscale(0);
+    animation: streakPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes streakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}

@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }} - Vocal Trainer{% endblock %}
+
+{% block content %}
+<div class="training-container">
+    <div id="setupScreen" class="setup-screen">
+        
+        <div class="setup-group">
+            <label class="setup-label">Сколько вы желаете упражнений выполнить?</label>
+            <div class="range-container">
+                <span class="range-value" id="testCountLabel">10</span>
+                <input type="range" id="testCountRange" min="5" max="15" value="10" step="1"
+                       oninput="document.getElementById('testCountLabel').textContent = this.value">
+                <div class="range-labels">
+                    <span>5</span>
+                    <span>15</span>
+                </div>
+            </div>
+        </div>
+        
+        <p class="difficulty-subtitle">Выберите сложность</p>
+        
+        <div class="difficulty-cards-wrapper">
+            <div class="difficulty-cards-grid">
+                
+                <div class="card-wrapper" onclick="selectDifficulty('easy')">
+                    <div class="training-card training-card-easy">
+                        <div class="card-content">
+                            <img src="{{ asset('images/easy-icon.png') }}" alt="Лёгкая" class="card-icon-img">
+                            <h2>
+                                <span class="card-title">Лёгкая</span>
+                                <span class="card-title">версия</span>
+                            </h2>
+                            <p>до 5 баллов за ноту</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-wrapper" onclick="selectDifficulty('hard')">
+                    <div class="training-card training-card-hard">
+                        <div class="card-content">
+                            <img src="{{ asset('images/hard-icon.png') }}" alt="Сложная" class="card-icon-img">
+                            <h2>
+                                <span class="card-title">Сложная</span>
+                                <span class="card-title">версия</span>
+                            </h2>
+                            <p>до 15 баллов за ноту</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div id="gameScreen" class="game-screen" style="display: none;">
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <span class="progress-text" id="progressText">0 из 10</span>
+            <span class="score-text" id="scoreText">
+                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                0 баллов
+            </span>
+        </div>
+        
+        <div class="smule-tuner-container">
+            <div class="smule-tuner-track" id="smuleTunerTrack">
+                <div class="smule-scale" id="smuleScale">
+                    <div class="smule-note" style="top: 10%;">Си</div>
+                    <div class="smule-note" style="top: 22%;">Ля</div>
+                    <div class="smule-note" style="top: 34%;">Соль</div>
+                    <div class="smule-note" style="top: 46%;">Фа</div>
+                    <div class="smule-note" style="top: 58%;">Ми</div>
+                    <div class="smule-note" style="top: 70%;">Ре</div>
+                    <div class="smule-note" style="top: 82%;">До</div>
+                </div>
+                
+                <div class="target-line" id="targetLine"></div>
+                
+                <div class="moving-note" id="movingNote"></div>
+                
+                <div class="voice-arrow" id="voiceArrow">
+                    <div class="arrow-head">▶</div>
+                </div>
+                
+                <div class="timer-display" id="timerDisplay">5.0s</div>
+            </div>
+        </div>
+        
+        <div class="staff-container">
+            <div class="staff-clef-block">
+                <div class="staff-lines-clef">
+                    <div class="staff-line" style="top: 10px;"></div>
+                    <div class="staff-line" style="top: 30px;"></div>
+                    <div class="staff-line" style="top: 50px;"></div>
+                    <div class="staff-line" style="top: 70px;"></div>
+                    <div class="staff-line" style="top: 90px;"></div>
+                </div>
+                <div class="treble-clef">𝄞</div>
+            </div>
+            
+            <div class="staff-notes-scroll" id="staffNotesScroll">
+                <div class="staff-wrapper-scroll" id="staffWrapperScroll">
+                    <div class="staff-lines">
+                        <div class="staff-line" style="top: 0px;"></div>
+                        <div class="staff-line" style="top: 20px;"></div>
+                        <div class="staff-line" style="top: 40px;"></div>
+                        <div class="staff-line" style="top: 60px;"></div>
+                        <div class="staff-line" style="top: 80px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="resultFeedback" class="result-feedback"></div>
+        
+        <button class="mic-button" id="micButton" onclick="toggleVoiceRecording()">
+            <img src="{{ asset('images/mic-icon.png') }}" alt="Mic">
+        </button>
+        
+    </div>
+    
+    <div id="resultScreen" class="result-screen" style="display: none;">
+        <div class="result-header">
+            <h2 class="result-title">Урок пройден!</h2>
+        </div>
+        
+        <div class="accuracy-section">
+            <div class="accuracy-label">Попадание в ноту:</div>
+            <div class="progress-circle-container">
+                <svg class="progress-circle" viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6c5ce7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
+                    <circle class="progress-circle-fill" cx="100" cy="100" r="90" 
+                            id="progressCircleFill"
+                            stroke-dasharray="565.486" 
+                            stroke-dashoffset="565.486"></circle>
+                </svg>
+                <div class="progress-circle-text">
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="motivation-box">
+            <p class="motivation-text" id="motivationText">Загрузка...</p>
+        </div>
+        
+        <button class="btn-continue" onclick="continueTraining()">
+            Продолжить
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/motivations.js') }}" defer></script>
+    <script src="{{ asset('js/notes.js') }}" defer></script>
+    <script src="{{ asset('js/audio-utils.js') }}" defer></script>
+    <script src="{{ asset('js/scoring.js') }}" defer></script>
+    <script src="{{ asset('js/results.js') }}" defer></script>
+    <script src="{{ asset('js/ui-voice.js') }}" defer></script>
+    <script src="{{ asset('js/training-voice.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,158 @@
+.game-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: none;
+}
+
+.progress-container {
+    width: calc(100vw - 300px);
+    max-width: 1200px;
+    min-width: 600px;
+    position: relative;
+    padding-top: 8px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.score-text {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.smule-tuner-container {
+    width: calc(100vw - 300px);
+    max-width: 1200px;
+    min-width: 600px;
+    margin: 0 auto 20px;
+    box-sizing: border-box;
+    align-self: center;
+}
+
+.smule-tuner-track {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+}
+
+.smule-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 6;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-primary);
+}
+
+.smule-note {
+    position: absolute;
+    left: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+.target-line {
+    position: absolute;
+    left: 30%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    z-index: 4;
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.3);
+}
+
+:root .target-line {background: rgba(0, 0, 0, 0.7);}
+
+[data-theme="dark"] .target-line {background: rgba(255, 255, 255, 0.9);}
+
+.moving-note {
+    position: absolute;
+    width: 250px;
+    height: 20px;
+    background: #4a9eff;
+    border-radius: 3px;
+    z-index: 3;
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.6);
+}
+
+.voice-arrow {
+    position: absolute;
+    left: 30%;
+    transform: translateX(-50%);
+    top: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    transition: top 0.08s linear;
+}
+
+.arrow-head {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #ff1744, #ff5252);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 0 20px rgba(255, 23, 68, 0.7);
+}
+
+.voice-arrow.hit .arrow-head {
+    background: linear-gradient(135deg, #00E676, #69F0AE);
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.9);
+}
+
+.timer-display {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent-primary);
+    z-index: 10;
+    background: var(--bg-secondary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}

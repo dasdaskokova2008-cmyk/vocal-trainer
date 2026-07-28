@@ -1,0 +1,2 @@
+# Каждый день в 00:00 по МСК
+0 0 * * * cd /var/www && php bin/console app:reset-streak >> /var/log/cron.log 2>&1

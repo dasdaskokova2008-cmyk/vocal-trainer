@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="register-page">
+    <div class="register-container">
+        
+        {% if show_email_popup %}
+            <h2 class="register-title">Привяжите email</h2>
+            <p class="register-subtitle">Это поможет восстановить пароль и защитить аккаунт</p>
+            
+            <form method="post" action="{{ path('register') }}" class="register-form">
+                <input type="hidden" name="bind_email" value="true">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                
+                <div class="form-group">
+                    <label>Email <span class="required-star">*</span></label>
+                    <input type="email" name="email" placeholder="Введите email" required>
+                </div>
+                
+                <div class="register-buttons">
+                    <button type="submit" class="register-btn btn-primary">Привязать email</button>
+                    <a href="{{ path('training') }}" class="btn-skip">Пропустить</a>
+                </div>
+            </form>
+            
+        {% elseif google_flow is defined %}
+            <h2 class="register-title">Завершите регистрацию</h2>
+            <p class="register-subtitle">Придумайте логин и пароль</p>
+            
+            {% if error %}
+                <div class="register-error">{{ error }}</div>
+            {% endif %}
+            
+            <form method="post" action="{{ path('google_complete') }}" class="register-form">
+                <div class="form-group">
+                    <label>Логин</label>
+                    <input type="text" id="google_username" name="username" placeholder="Придумайте логин" pattern="[A-Za-z0-9]+">
+                    <div id="googleUsernameStatus" class="input-status"></div>
+                    <small>Только английские буквы и цифры. Можно пропустить</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="google_password" name="password" placeholder="Придумайте пароль">
+                        <button type="button" onclick="togglePassword('google_password', this)" class="toggle-password-btn">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        </button>
+                    </div>
+                    <div id="googlePasswordStatus" class="input-status"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Повторите пароль</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="google_password_repeat" name="password_repeat" placeholder="Повторите пароль">
+                        <button type="button" onclick="togglePassword('google_password_repeat', this)" class="toggle-password-btn">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        </button>
+                    </div>
+                    <div id="googlePasswordRepeatStatus" class="input-status"></div>
+                </div>
+                
+                <button type="submit" class="register-btn">Завершить</button>
+            </form>
+            
+        {% else %}
+            <h2 class="register-title">Регистрация</h2>
+            <p class="register-subtitle">Создайте новый аккаунт</p>
+            
+            {% if error %}
+                <div class="register-error">{{ error }}</div>
+            {% endif %}
+            
+            <form method="post" action="{{ path('register') }}" class="register-form" id="registerForm">
+                <div class="form-group">
+                    <label>Логин <span class="required-star">*</span></label>
+                    <input type="text" id="register_username" name="username" placeholder="Придумайте логин" pattern="[A-Za-z0-9]+" value="{{ generated_username|default('') }}">
+                    <div id="usernameStatus" class="input-status"></div>
+                    <small>Только английские буквы и цифры. Можно пропустить</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Пароль <span class="required-star">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="register_password" name="password" placeholder="Придумайте пароль" required>
+                        <button type="button" onclick="togglePassword('register_password', this)" class="toggle-password-btn">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        </button>
+                    </div>
+                    <div id="passwordStatus" class="input-status"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Повторите пароль <span class="required-star">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="register_password_repeat" name="password_repeat" placeholder="Повторите пароль" required>
+                        <button type="button" onclick="togglePassword('register_password_repeat', this)" class="toggle-password-btn">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        </button>
+                    </div>
+                    <div id="passwordRepeatStatus" class="input-status"></div>
+                </div>
+                
+                <button type="submit" class="register-btn">Зарегистрироваться</button>
+            </form>
+            
+            <div class="register-footer">
+                Уже есть аккаунт? <a href="#" onclick="openAuth(); return false;">Войти</a>
+            </div>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

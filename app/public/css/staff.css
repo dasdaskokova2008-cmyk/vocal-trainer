@@ -1,0 +1,172 @@
+.staff-container {
+    width: calc(100vw - 300px);
+    max-width: 1200px;
+    min-width: 600px;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 20px 0;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+    align-self: center;
+}
+
+.staff-clef-block {
+    position: sticky;
+    left: 0;
+    width: 80px;
+    flex-shrink: 0;
+    background: var(--bg-secondary);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    border-right: 2px solid var(--border-color);
+}
+
+.staff-lines-clef {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20px;
+    height: 100px;
+}
+
+.staff-lines-clef .staff-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-muted);
+    opacity: 0.5;
+}
+
+.treble-clef {
+    font-size: 72px;
+    font-family: 'Times New Roman', serif;
+    color: var(--text-primary);
+    line-height: 1;
+    z-index: 5;
+    position: relative;
+}
+
+.staff-notes-scroll {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    position: relative;
+    min-height: 140px;
+}
+
+.staff-wrapper-scroll {
+    position: relative;
+    height: 140px;
+    min-width: 100%;
+}
+
+.staff-wrapper-scroll .staff-lines {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20px;
+    height: 100px;
+}
+
+.staff-wrapper-scroll .staff-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-muted);
+    opacity: 0.5;
+}
+
+.staff-note {
+    position: absolute;
+    width: 30px;
+    height: 120px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.staff-note:hover {transform: scale(1.1);}
+
+.staff-note .note-dot {
+    position: absolute;
+    width: 22px;
+    height: 16px;
+    border-radius: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+.staff-note .note-stem {
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    left: 20px;
+    transform: translateY(-100%);
+    z-index: 2;
+}
+
+.staff-note .note-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    padding: 2px 10px;
+    white-space: nowrap;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.staff-note.current .note-label {
+    background: #4a9eff;
+    color: white;
+    border-color: #4a9eff;
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.4);
+}
+
+.staff-note.current .note-dot {
+    background: #4a9eff;
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.6);
+}
+
+.staff-note.current .note-stem {background: #4a9eff;}
+
+.staff-note.passed .note-label {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    border-color: var(--border-color);
+    opacity: 0.7;
+}
+
+.staff-note.passed .note-dot {
+    background: var(--text-muted);
+    opacity: 0.5;
+}
+
+.staff-note.passed .note-stem {
+    background: var(--text-muted);
+    opacity: 0.5;
+}
+
+.ledger-line {
+    position: absolute;
+    height: 2px;
+    background: var(--text-muted);
+    opacity: 0.5;
+    z-index: 1;
+}
