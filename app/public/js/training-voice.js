@@ -32,7 +32,7 @@ function selectDifficulty(difficulty) {
 function startVoiceGame() {
     const totalTests = parseInt(document.getElementById('testCountRange').value);
     if (!selectedDifficulty) {
-        alert('⚠️ Выберите сложность!');
+        alert('Выберите сложность!');
         return;
     }
     voiceGameState.difficulty = selectedDifficulty;
@@ -77,7 +77,7 @@ function showNextVoiceNote() {
         micBtn.classList.remove('recording');
         micBtn.querySelector('img').src = '/images/mic-icon.png';
         const status = document.getElementById('micStatus');
-        if (status) status.textContent = '⏳ Подготовка...';}
+        if (status) status.textContent = 'Подготовка...';}
     if (isRecording) {
         stopMicrophone();
         updateMicButton(false);}
@@ -89,7 +89,7 @@ function showNextVoiceNote() {
                     micBtn.disabled = false;
                     micBtn.classList.remove('locked');
                     const status = document.getElementById('micStatus');
-                    if (status) status.textContent = '🎤 Начать петь';
+                    if (status) status.textContent = 'Начать петь';
                 }
                 voiceGameState.isWaitingForStart = false;
             }, 2000);
@@ -100,7 +100,7 @@ function showNextVoiceNote() {
                 micBtn.disabled = false;
                 micBtn.classList.remove('locked');
                 const status = document.getElementById('micStatus');
-                if (status) status.textContent = '🎤 Начать петь';
+                if (status) status.textContent = 'Начать петь';
             }
             voiceGameState.isWaitingForStart = false;
         }, 2000);
@@ -246,7 +246,7 @@ function finishCurrentVoiceNote() {
     const micBtn = document.getElementById('micButton');
     if (micBtn) {
         const status = document.getElementById('micStatus');
-        if (status) status.textContent = '⏳ Следующая нота...';
+        if (status) status.textContent = 'Следующая нота...';
     }
     setTimeout(showNextVoiceNote, 2000);
 }
@@ -263,12 +263,10 @@ function finishVoiceTest() {
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('resultScreen').style.display = 'flex';
     
-    // 👇 ПОЛУЧАЕМ CSRF ТОКЕН
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     
-    // 👇 ФОРМИРУЕМ ДАННЫЕ ПРАВИЛЬНО
     const data = {
-        type: 'voice', // 👈 ОБЯЗАТЕЛЬНО!
+        type: 'voice',
         difficulty: voiceGameState.difficulty,
         totalTests: voiceGameState.totalTests,
         totalScore: voiceGameState.score,
@@ -278,7 +276,7 @@ function finishVoiceTest() {
         })),
         percentage: percentage,
         userDate: getTodayUserDate(),
-        _csrf_token: csrfToken // 👈 ОБЯЗАТЕЛЬНО!
+        _csrf_token: csrfToken 
     };
     
     saveTrainingResults(data, '/training/pitch/result');

@@ -13,6 +13,7 @@
 
     <div class="learning-cards-area">
         <div class="training-cards-three">
+            {# Карточка 1: Разминка #}
             <div class="card-wrapper">
                 <a href="{{ path('training_warmup') }}" class="training-card training-card-voice">
                     <div class="card-content">
@@ -26,6 +27,7 @@
                 </a>
             </div>
 
+            {# Карточка 2: Точность звука #}
             <div class="card-wrapper">
                 <a href="{{ path('training_pitch') }}" class="training-card training-card-voice">
                     <div class="card-content">
@@ -36,6 +38,20 @@
                             <span class="card-title">в ноту</span>
                         </h2>
                         <p>Развивай чистоту интонации и попадание в ноты</p>
+                        <div class="card-arrow">→</div>
+                    </div>
+                </a>
+            </div>
+
+            {# 👇 КАРТОЧКА 3: МЕЛОДИИ (НОВАЯ) #}
+            <div class="card-wrapper">
+                <a href="{{ path('training_melody') }}" class="training-card training-card-voice">
+                    <div class="card-content">
+                        <img src="{{ asset('images/melody-icon.png') }}" alt="Мелодии" class="card-icon-img">
+                        <h2>
+                            <span class="card-title">Мелодии</span>
+                        </h2>
+                        <p>Пой целые мелодии и получай баллы</p>
                         <div class="card-arrow">→</div>
                     </div>
                 </a>

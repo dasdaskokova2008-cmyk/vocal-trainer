@@ -9,31 +9,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const username = this.value.trim();
             clearTimeout(typingTimer);
             if (username.length === 0) {
-                usernameStatus.innerHTML = '💡 Можно пропустить - сгенерируется автоматически';
+                usernameStatus.innerHTML = 'Можно пропустить - сгенерируется автоматически';
                 usernameStatus.className = 'input-status info';
                 return;
             }
             if (!/^[A-Za-z0-9]+$/.test(username)) {
-                usernameStatus.innerHTML = '❌ Только латиница и цифры';
+                usernameStatus.innerHTML = 'Только латиница и цифры';
                 usernameStatus.className = 'input-status error';
                 return;
             }
-            usernameStatus.innerHTML = '⏳ Проверка...';
+            usernameStatus.innerHTML = 'Проверка...';
             usernameStatus.className = 'input-status loading';
             typingTimer = setTimeout(() => {
                 fetch('/check-username?username=' + encodeURIComponent(username))
                     .then(response => response.json())
                     .then(data => {
                         if (data.exists) {
-                            usernameStatus.innerHTML = '❌ Логин занят';
+                            usernameStatus.innerHTML = 'Логин занят';
                             usernameStatus.className = 'input-status error';
                         } else {
-                            usernameStatus.innerHTML = '✅ Логин доступен';
+                            usernameStatus.innerHTML = 'Логин доступен';
                             usernameStatus.className = 'input-status success';
                         }
                     })
                     .catch(() => {
-                        usernameStatus.innerHTML = '⚠️ Ошибка проверки';
+                        usernameStatus.innerHTML = 'Ошибка проверки';
                         usernameStatus.className = 'input-status error';
                     });
             }, doneTypingInterval);
@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             if (password.length < 6) {
-                passwordStatus.innerHTML = '❌ Минимум 6 символов';
+                passwordStatus.innerHTML = 'Минимум 6 символов';
                 passwordStatus.className = 'input-status error';
             } else {
-                passwordStatus.innerHTML = '✅ Пароль подходит';
+                passwordStatus.innerHTML = 'Пароль подходит';
                 passwordStatus.className = 'input-status success';
             }
             checkPasswordMatch();
@@ -83,13 +83,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (password === passwordRepeat && password.length >= 6) {
-            passwordRepeatStatus.innerHTML = '✅ Пароли совпадают';
+            passwordRepeatStatus.innerHTML = 'Пароли совпадают';
             passwordRepeatStatus.className = 'input-status success';
         } else if (password === passwordRepeat && password.length < 6) {
-            passwordRepeatStatus.innerHTML = '❌ Пароль слишком короткий';
+            passwordRepeatStatus.innerHTML = 'Пароль слишком короткий';
             passwordRepeatStatus.className = 'input-status error';
         } else {
-            passwordRepeatStatus.innerHTML = '❌ Пароли не совпадают';
+            passwordRepeatStatus.innerHTML = 'Пароли не совпадают';
             passwordRepeatStatus.className = 'input-status error';
         }
     }
@@ -102,7 +102,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ Вход...';
+    submitBtn.textContent = 'Вход...';
     submitBtn.disabled = true;
     removeErrors('loginForm');
     fetch(this.action, {
@@ -134,7 +134,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         console.error('Ошибка:', error);
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        showError('loginForm', '❌ Ошибка сервера. Попробуйте позже.');
+        showError('loginForm', 'Ошибка сервера. Попробуйте позже.');
     });
 });
 
@@ -150,11 +150,10 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ Регистрация...';
+    submitBtn.textContent = 'Регистрация...';
     submitBtn.disabled = true;
     removeErrors('registerForm');
     
-    // 👇 ВЫБИРАЕМ РАНДОМНЫЙ АВАТАР ИЗ 63
     const randomAvatarId = Math.floor(Math.random() * 63) + 1;
     const avatarName = 'avatar_' + randomAvatarId + '.png';
     formData.append('avatar', avatarName);
@@ -178,7 +177,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         
         if (data.success) {
             updateHeader(data.username, data.score, data.place, data.streak);
-            // 👇 ПЕРЕДАЁМ АВАТАР В МОДАЛКУ
             showRegistrationSuccess(data.username, data.score, data.place, data.streak, avatarName);
             setTimeout(() => location.reload(), 500);
         } else if (data.error) {
@@ -188,6 +186,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     .catch((error) => {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        showError('registerForm', '❌ Ошибка сервера');
+        showError('registerForm', 'Ошибка сервера');
     });
 });

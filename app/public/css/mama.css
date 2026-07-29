@@ -139,7 +139,6 @@
     opacity: 0.5;
     z-index: 1;
 }
-/* Диезы и бемоли */
 .staff-note .accidental {
     position: absolute;
     font-size: 18px;

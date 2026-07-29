@@ -44,21 +44,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $lastActivityDate = null;
 
-    // src/Entity/User.php
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $avatar = null; // имя файла аватарки (avatar_1.png ... avatar_68.png)
+    private ?string $avatar = null; 
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $emailVerified = false;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $hearingLight = null; // массив процентов (последние 20)
+    private ?array $hearingLight = null; 
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $hearingHard = null; // массив процентов (последние 20)
+    private ?array $hearingHard = null; 
 
-    // Геттеры и сеттеры
     public function getAvatar(): ?string { return $this->avatar; }
     public function setAvatar(?string $avatar): self { $this->avatar = $avatar; return $this; }
 
@@ -214,4 +211,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->unlockedAvatars = $unlockedAvatars;
         return $this;
     }
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $melodyLight = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $melodyHard = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $melodyUser = null; 
+
+    public function getMelodyLight(): ?array { return $this->melodyLight; }
+    public function setMelodyLight(?array $melodyLight): self { $this->melodyLight = $melodyLight; return $this; }
+
+    public function getMelodyHard(): ?array { return $this->melodyHard; }
+    public function setMelodyHard(?array $melodyHard): self { $this->melodyHard = $melodyHard; return $this; }
+
+    public function getMelodyUser(): ?array { return $this->melodyUser; }
+    public function setMelodyUser(?array $melodyUser): self { $this->melodyUser = $melodyUser; return $this; }
 }

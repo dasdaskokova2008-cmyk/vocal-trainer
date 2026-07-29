@@ -45,13 +45,13 @@ class AuthController extends AbstractController
             if (!$user) {
                 return $this->json([
                     'success' => false,
-                    'error' => '❌ Пользователь с таким логином не найден'
+                    'error' => 'Пользователь с таким логином не найден'
                 ]);
             }
             if (!$passwordHasher->isPasswordValid($user, $password)) {
                 return $this->json([
                     'success' => false,
-                    'error' => '❌ Неверный пароль'
+                    'error' => 'Неверный пароль'
                 ]);
             }
             $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
@@ -93,7 +93,6 @@ class AuthController extends AbstractController
             $password = $request->request->get('password');
             $passwordRepeat = $request->request->get('password_repeat');
             
-            // 👇 ПОЛУЧАЕМ АВАТАР ИЗ ЗАПРОСА (ЕСЛИ ПЕРЕДАН)
             $avatar = $request->request->get('avatar', '');
             
             if (empty($username)) {
@@ -108,25 +107,23 @@ class AuthController extends AbstractController
             }
             
             if (!preg_match('/^[A-Za-z0-9]+$/', $username)) {
-                $error = '❌ Логин может содержать только латинские буквы и цифры. Без пробелов и спецсимволов.';
+                $error = 'Логин может содержать только латинские буквы и цифры. Без пробелов и спецсимволов.';
             }
             elseif ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
-                $error = '❌ Этот логин уже занят. Придумайте другой.';
+                $error = 'Этот логин уже занят. Придумайте другой.';
             }
             elseif (strlen($password) < 6) {
-                $error = '❌ Пароль слишком короткий. Минимум 6 символов.';
+                $error = 'Пароль слишком короткий. Минимум 6 символов.';
             }
             elseif ($password !== $passwordRepeat) {
-                $error = '❌ Пароли не совпадают. Проверьте и попробуйте снова.';
+                $error = 'Пароли не совпадают. Проверьте и попробуйте снова.';
             }
             else {
                 try {
-                    // 👇 ЕСЛИ НЕТ АВАТАРА - ВЫБИРАЕМ РАНДОМНЫЙ ИЗ 63
                     if (empty($avatar)) {
                         $randomId = rand(1, 63);
                         $avatar = 'avatar_' . $randomId . '.png';
                     } else {
-                        // ИЗВЛЕКАЕМ ID ИЗ ИМЕНИ ФАЙЛА
                         preg_match('/avatar_(\d+)\.png/', $avatar, $matches);
                         $randomId = $matches[1] ?? 1;
                     }
@@ -138,9 +135,7 @@ class AuthController extends AbstractController
                     $user->setSkipIntro(false);
                     $user->setRoles(['ROLE_USER']);
                     
-                    // 👇 СОХРАНЯЕМ АВАТАР
                     $user->setAvatar($avatar);
-                    // 👇 РАЗБЛОКИРОВАН ТОЛЬКО ЭТОТ АВАТАР
                     $user->setUnlockedAvatars([(int)$randomId]);
 
                     $em->persist($user);
@@ -158,7 +153,7 @@ class AuthController extends AbstractController
                             'score' => $user->getScore(),
                             'streak' => $user->getStreak(),
                             'place' => $place,
-                            'avatar' => $avatar, // 👈 ВОЗВРАЩАЕМ АВАТАР
+                            'avatar' => $avatar, 
                             'message' => 'Регистрация успешна!'
                         ]);
                     }
@@ -166,7 +161,7 @@ class AuthController extends AbstractController
                     return $this->redirectToRoute('training');
                     
                 } catch (\Exception $e) {
-                    $error = '❌ Что-то пошло не так при создании аккаунта. Попробуйте позже.';
+                    $error = 'Что-то пошло не так при создании аккаунта. Попробуйте позже.';
                 }
             }
         }
@@ -212,7 +207,7 @@ class AuthController extends AbstractController
         $code = $request->query->get('code');
         
         if (!$code) {
-            $this->addFlash('error', '❌ Ошибка авторизации через Google. Код не получен.');
+            $this->addFlash('error', 'Ошибка авторизации через Google. Код не получен.');
             return $this->redirectToRoute('training');
         }
 
@@ -251,7 +246,6 @@ class AuthController extends AbstractController
                 
                 $randomPassword = bin2hex(random_bytes(8));
                 
-                // 👇 ВЫБИРАЕМ РАНДОМНЫЙ АВАТАР
                 $randomId = rand(1, 63);
                 $avatar = 'avatar_' . $randomId . '.png';
                 
@@ -263,17 +257,15 @@ class AuthController extends AbstractController
                 $user->setSkipIntro(false);
                 $user->setRoles(['ROLE_USER']);
                 
-                // 👇 СОХРАНЯЕМ АВАТАР
                 $user->setAvatar($avatar);
-                // 👇 РАЗБЛОКИРОВАН ТОЛЬКО ЭТОТ АВАТАР
                 $user->setUnlockedAvatars([(int)$randomId]);
                 
                 $em->persist($user);
                 $em->flush();
                 
-                $this->addFlash('success', '✅ Аккаунт создан! Добро пожаловать, ' . $finalUsername . '!');
+                $this->addFlash('success', 'Аккаунт создан! Добро пожаловать, ' . $finalUsername . '!');
             } else {
-                $this->addFlash('success', '✅ Добро пожаловать, ' . $user->getUsername() . '!');
+                $this->addFlash('success', 'Добро пожаловать, ' . $user->getUsername() . '!');
             }
             
             $token = new UsernamePasswordToken(
@@ -287,7 +279,7 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('training');
             
         } catch (\Exception $e) {
-            $this->addFlash('error', '❌ Ошибка при входе через Google: ' . $e->getMessage());
+            $this->addFlash('error', 'Ошибка при входе через Google: ' . $e->getMessage());
             return $this->redirectToRoute('training');
         }
     }
@@ -295,7 +287,7 @@ class AuthController extends AbstractController
     #[Route('/google/complete', name: 'google_complete')]
     public function googleComplete(): Response
     {
-        $this->addFlash('info', '🔧 Функция завершения регистрации через Google в разработке.');
+        $this->addFlash('info', 'Функция завершения регистрации через Google в разработке.');
         return $this->redirectToRoute('training');
     }
 }

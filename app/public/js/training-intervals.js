@@ -1,4 +1,3 @@
-// training-intervals.js
 
 function getTodayUserDate() {
     const now = new Date();
@@ -20,7 +19,6 @@ const intervalGameState = {
     shuffledNames: [],
 };
 
-// --- Инициализация ---
 function selectIntervalDifficulty(difficulty) {
     intervalGameState.difficulty = difficulty;
     startIntervalGame();
@@ -41,17 +39,16 @@ function startIntervalGame() {
     const staff = document.getElementById('intervalsStaff');
     if (intervalGameState.difficulty === 'hard') {
         staff.style.display = 'none';
-        document.getElementById('intervalsHint').textContent = '🎵 Сложная версия! Определи интервал на слух';
+        document.getElementById('intervalsHint').textContent = 'Сложная версия! Определи интервал на слух';
     } else {
         staff.style.display = 'flex';
-        document.getElementById('intervalsHint').textContent = '🎵 Послушай интервал и определи его';
+        document.getElementById('intervalsHint').textContent = 'Послушай интервал и определи его';
     }
 
     populateSelects();
     showNextInterval();
 }
 
-// --- Заполнение выпадающих списков ---
 function populateSelects() {
     const shorts = INTERVAL_ORDER;
     const names = INTERVAL_ORDER.map(key => INTERVAL_NAMES[key]);
@@ -83,7 +80,6 @@ function populateSelect(id, options) {
     });
 }
 
-// --- Показать следующий интервал ---
 function showNextInterval() {
     if (intervalGameState.currentTest >= intervalGameState.totalTests) {
         finishIntervalTest();
@@ -132,7 +128,6 @@ function showNextInterval() {
     checkAllFieldsFilled();
 }
 
-// --- Проверка заполнения всех полей ---
 function checkAllFieldsFilled() {
     const short = document.getElementById('answerShort')?.value;
     const name = document.getElementById('answerName')?.value;
@@ -149,7 +144,6 @@ function checkAllFieldsFilled() {
     }
 }
 
-// --- Рисование интервала на нотном стане ---
 function drawIntervalOnStaff(pair) {
     const wrapper = document.getElementById('intervalsStaffWrapper');
     wrapper.innerHTML = '';
@@ -171,11 +165,10 @@ function drawIntervalOnStaff(pair) {
     drawNoteOnIntervalStaff(wrapper, note2, 38);
 }
 
-// --- Отрисовка одной ноты с добавочными линиями ---
 function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     const noteData = NOTES_RU[noteName];
     if (!noteData) {
-        console.warn('❌ Нота не найдена:', noteName);
+        console.warn('Нота не найдена:', noteName);
         return;
     }
 
@@ -188,7 +181,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     const lineWidth = Math.max(28, containerWidth * 0.045);
     const lineLeftOffset = parseFloat(leftPos) - 2.5;
 
-    // ДОБАВОЧНЫЕ ЛИНИИ
     if (pos < 0) {
         for (let i = 0; i >= Math.ceil(pos); i--) {
             const y = staffY + i * spacing;
@@ -229,7 +221,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
         }
     }
 
-    // НОТА
     const noteEl = document.createElement('div');
     noteEl.className = 'staff-note clickable';
     noteEl.style.left = leftPos + '%';
@@ -240,7 +231,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     noteEl.style.cursor = 'pointer';
     noteEl.title = noteName;
 
-    // Кружок
     const dot = document.createElement('div');
     dot.className = 'note-dot';
     dot.style.cssText = `
@@ -257,7 +247,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     `;
     noteEl.appendChild(dot);
 
-    // Штиль
     const stem = document.createElement('div');
     stem.className = 'note-stem';
     stem.style.cssText = `
@@ -272,7 +261,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     `;
     noteEl.appendChild(stem);
 
-    // ДИЕЗ ИЛИ БЕМОЛЬ
     const hasSharp = noteName.includes('♯');
     const hasFlat = noteName.includes('♭');
 
@@ -301,7 +289,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
         noteEl.appendChild(accEl);
     }
 
-    // КЛИК
     const freq = noteData.freq;
     noteEl.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -318,7 +305,6 @@ function drawNoteOnIntervalStaff(wrapper, noteName, leftPos) {
     wrapper.appendChild(noteEl);
 }
 
-// --- Воспроизведение ---
 function playCurrentInterval() {
     const pair = intervalGameState.currentPair;
     if (!pair) return;
@@ -379,7 +365,6 @@ function playNoteByFrequency(freq) {
     }
 }
 
-// --- Отправка ответа ---
 function submitIntervalAnswer() {
     if (!intervalGameState.isWaitingForAnswer) return;
 
@@ -389,7 +374,7 @@ function submitIntervalAnswer() {
     const steps = document.getElementById('answerSteps').value.replace(' ступеней', '');
 
     if (!short || !name || !tones || !steps) {
-        showIntervalFeedback('📝 Заполните все поля!', 'info');
+        showIntervalFeedback('Заполните все поля!', 'info');
         return;
     }
 
@@ -429,7 +414,6 @@ function submitIntervalAnswer() {
     }, 3000);
 }
 
-// --- Обратная связь ---
 function showIntervalFeedbackWithAnswers(shortOk, nameOk, tonesOk, stepsOk, correct) {
     ['cardShort', 'cardName', 'cardTones', 'cardSteps'].forEach(id => {
         const card = document.getElementById(id);
@@ -460,14 +444,12 @@ function updateCardResult(cardId, selectId, isCorrect, correctValue) {
         card.classList.add('card-correct');
         resultEl.className = 'interval-card-result correct';
         resultEl.innerHTML = `
-            <span style="font-size: 20px; margin-right: 6px;">✅</span>
             <span style="font-weight: 600;">${correctValue}</span>
         `;
     } else {
         card.classList.add('card-wrong');
         resultEl.className = 'interval-card-result wrong';
         resultEl.innerHTML = `
-            <span style="font-size: 18px; margin-right: 4px;">❌</span>
             <span class="strikethrough" style="font-weight: 500; opacity: 0.6;">${userValue}</span>
             <span style="margin: 0 6px; color: var(--text-muted);">→</span>
             <span style="font-weight: 700; color: #00c853;">${correctValue}</span>
@@ -482,7 +464,6 @@ function showIntervalFeedback(message, type) {
     fb.style.display = 'block';
 }
 
-// --- Прогресс ---
 function updateIntervalProgress() {
     const p = ((intervalGameState.currentTest - 1) / intervalGameState.totalTests) * 100;
     document.getElementById('progressFill').style.width = p + '%';
@@ -490,7 +471,6 @@ function updateIntervalProgress() {
     document.getElementById('scoreText').textContent = `⭐ ${intervalGameState.score} баллов`;
 }
 
-// --- Завершение ---
 function finishIntervalTest() {
     intervalGameState.isGameActive = false;
     document.getElementById('gameScreen').style.display = 'none';
@@ -512,7 +492,6 @@ function finishIntervalTest() {
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     
-    // 👇 ДОБАВЛЯЕМ ДАТУ ПОЛЬЗОВАТЕЛЯ
     const userDate = getTodayUserDate();
 
     const data = {
@@ -525,14 +504,13 @@ function finishIntervalTest() {
             success: r.correct 
         })),
         percentage: percentage,
-        userDate: userDate, // 👈 ДОБАВЛЯЕМ
+        userDate: userDate, 
         _csrf_token: csrfToken
     };
 
     saveTrainingResults(data, '/training/pitch/result');
 }
 
-// --- Анимация круга ---
 function animateIntervalProgressCircle(percentage) {
     const circle = document.getElementById('progressCircleFill');
     const percentText = document.getElementById('progressPercent');
@@ -560,7 +538,6 @@ function animateIntervalProgressCircle(percentage) {
     }, 100);
 }
 
-// --- Продолжить ---
 function continueIntervalTraining() {
     document.getElementById('resultScreen').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'flex';
@@ -572,9 +549,6 @@ function continueIntervalTraining() {
     document.getElementById('intervalsStaffWrapper').innerHTML = '';
 }
 
-// ============================================================
-// ТЕОРИЯ
-// ============================================================
 
 function openIntervalTheory() {
     const modal = document.getElementById('theoryModal');
@@ -629,7 +603,7 @@ function openIntervalTheory() {
                         </div>
                     </div>
                     <div class="theory-association">
-                        <div class="theory-association-label">🎵 Ассоциация</div>
+                        <div class="theory-association-label">Ассоциация</div>
                         <div class="theory-association-value">(будет добавлена позже)</div>
                     </div>
                 </div>
@@ -678,10 +652,6 @@ function playIntervalSound(key) {
         playTwoNotes(freq1, freq2);
     }
 }
-
-// ============================================================
-// КОНТРОЛЬ ЗАПОЛНЕНИЯ ПОЛЕЙ
-// ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     ['answerShort', 'answerName', 'answerTones', 'answerSteps'].forEach(id => {

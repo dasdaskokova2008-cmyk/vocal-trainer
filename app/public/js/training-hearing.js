@@ -1,11 +1,10 @@
-// training-hearing.js
 function getTodayUserDate() {
     const now = new Date();
     return now.getFullYear() + '-' + 
            String(now.getMonth() + 1).padStart(2, '0') + '-' + 
            String(now.getDate()).padStart(2, '0');
 }
-// Состояние игры
+
 const hearingGameState = {
     difficulty: 'easy',
     totalTests: 10,
@@ -19,7 +18,6 @@ const hearingGameState = {
     isGameActive: false,
 };
 
-// Маппинг позиций на ноты (скрипичный ключ)
 const POSITION_TO_NOTE = {
     0: 'Фа2',
     0.5: 'Ми2',
@@ -39,7 +37,6 @@ const POSITION_TO_NOTE = {
 const EASY_NOTES = ['До', 'Ре', 'Ми', 'Фа', 'Соль', 'Ля', 'Си'];
 const HARD_NOTES = ['Фа2', 'Ми2', 'Ре2', 'До2', 'Си', 'Ля', 'Соль', 'Фа', 'Ми', 'Ре', 'До', 'Си1', 'Ля1'];
 
-// --- Инициализация ---
 function selectHearingDifficulty(difficulty) {
     hearingGameState.difficulty = difficulty;
     startHearingGame();
@@ -60,18 +57,17 @@ function startHearingGame() {
     const pianoContainer = document.getElementById('pianoContainer');
     if (hearingGameState.difficulty === 'hard') {
         pianoContainer.style.display = 'none';
-        document.getElementById('hearingHint').textContent = '🎵 Сложная версия! Угадай ноту без подсказок';
+        document.getElementById('hearingHint').textContent = 'Сложная версия! Угадай ноту без подсказок';
     } else {
         pianoContainer.style.display = 'flex';
         buildPiano();
-        document.getElementById('hearingHint').textContent = '🎵 Послушай ноту и найди её на нотном стане';
+        document.getElementById('hearingHint').textContent = 'Послушай ноту и найди её на нотном стане';
     }
 
     buildClickableStaff();
     showNextHearingNote();
 }
 
-// --- ПИАНИНО ---
 function buildPiano() {
     const piano = document.getElementById('piano');
     piano.innerHTML = '';
@@ -125,7 +121,6 @@ function playPianoKey(note) {
     playNoteByFrequency(noteData.freq);
 }
 
-// --- НОТНЫЙ СТАН ---
 function buildClickableStaff() {
     const wrapper = document.getElementById('staffWrapperScroll');
     wrapper.innerHTML = '';
@@ -172,7 +167,6 @@ function buildClickableStaff() {
     });
 }
 
-// --- ПОДСВЕТКА ПРИ НАВЕДЕНИИ ---
 function showHoverNote(position) {
     document.querySelectorAll('.staff-note.hover').forEach(el => el.remove());
 
@@ -209,7 +203,6 @@ function hideHoverNote() {
     document.querySelectorAll('.staff-note.hover').forEach(el => el.remove());
 }
 
-// --- ВЫБОР НОТЫ ---
 function selectNoteOnStaff(position) {
     if (!hearingGameState.isWaitingForAnswer) return;
 
@@ -253,7 +246,6 @@ function selectNoteOnStaff(position) {
     document.getElementById('resultFeedback').style.display = 'none';
 }
 
-// --- ДОПОЛНИТЕЛЬНЫЕ ЛИНИИ ---
 function drawLedgerLines(wrapper, noteName, noteLeftPercent) {
     const noteData = NOTES_RU[noteName];
     if (!noteData) return;
@@ -273,7 +265,6 @@ function drawLedgerLines(wrapper, noteName, noteLeftPercent) {
     }
 }
 
-// --- ПОКАЗАТЬ СЛЕДУЮЩУЮ НОТУ ---
 function showNextHearingNote() {
     if (hearingGameState.currentTest >= hearingGameState.totalTests) {
         finishHearingTest();
@@ -295,14 +286,13 @@ function showNextHearingNote() {
 
     updateHearingProgress();
 
-    document.getElementById('hearingHint').textContent = '🎵 Послушай ноту и найди её на нотном стане';
+    document.getElementById('hearingHint').textContent = 'Послушай ноту и найди её на нотном стане';
 
     setTimeout(() => {
         playCurrentHearingNote();
     }, 500);
 }
 
-// --- ВОСПРОИЗВЕДЕНИЕ ---
 function playCurrentHearingNote() {
     const note = hearingGameState.currentNote;
     const noteData = NOTES_RU[note];
@@ -328,11 +318,10 @@ function playNoteByFrequency(freq) {
     }
 }
 
-// --- ОТПРАВКА ОТВЕТА ---
 function submitHearingAnswer() {
     if (!hearingGameState.isWaitingForAnswer) return;
     if (!hearingGameState.selectedNote) {
-        showHearingFeedback('🎯 Сначала выбери ноту на стане!', 'info');
+        showHearingFeedback('Сначала выбери ноту на стане!', 'info');
         return;
     }
 
@@ -348,7 +337,6 @@ function submitHearingAnswer() {
         else points = 1;
     }
 
-    // Умножаем очки на сложность
     const multiplier = hearingGameState.difficulty === 'hard' ? 3 : 1;
     const finalPoints = points * multiplier;
 
@@ -363,7 +351,7 @@ function submitHearingAnswer() {
     if (isCorrect) {
         hearingGameState.score += finalPoints;
         
-        showHearingFeedback(`✅ Отлично! Это нота ${hearingGameState.currentNote}. +${finalPoints} баллов!`, 'success');
+        showHearingFeedback(`Отлично! Это нота ${hearingGameState.currentNote}. +${finalPoints} баллов!`, 'success');
         
         document.getElementById('submitAnswerBtn').style.display = 'none';
         hearingGameState.isWaitingForAnswer = false;
@@ -371,14 +359,13 @@ function submitHearingAnswer() {
             showNextHearingNote();
         }, 1500);
     } else {
-        showHearingFeedback(`❌ Неверно. Попробуйте ещё раз!`, 'fail');
+        showHearingFeedback(`Неверно. Попробуйте ещё раз!`, 'fail');
         document.querySelectorAll('.staff-note.selected').forEach(el => el.remove());
         hearingGameState.selectedNote = null;
         document.getElementById('submitAnswerBtn').style.display = 'none';
     }
 }
 
-// --- ОБРАТНАЯ СВЯЗЬ ---
 function showHearingFeedback(message, type) {
     const fb = document.getElementById('resultFeedback');
     fb.textContent = message;
@@ -386,7 +373,6 @@ function showHearingFeedback(message, type) {
     fb.style.display = 'block';
 }
 
-// --- ПРОГРЕСС ---
 function updateHearingProgress() {
     const p = ((hearingGameState.currentTest - 1) / hearingGameState.totalTests) * 100;
     document.getElementById('progressFill').style.width = p + '%';
@@ -395,7 +381,6 @@ function updateHearingProgress() {
     document.getElementById('scoreText').textContent = `⭐ ${hearingGameState.score} баллов`;
 }
 
-// --- ЗАВЕРШЕНИЕ ---
 function finishHearingTest() {
     hearingGameState.isGameActive = false;
     document.getElementById('gameScreen').style.display = 'none';
@@ -417,7 +402,6 @@ function finishHearingTest() {
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     
-    // 👇 ДОБАВЛЯЕМ ДАТУ ПОЛЬЗОВАТЕЛЯ
     const userDate = getTodayUserDate();
 
     const data = {
@@ -430,13 +414,12 @@ function finishHearingTest() {
             success: r.success 
         })),
         percentage: percentage,
-        userDate: userDate, // 👈 ДОБАВЛЯЕМ
+        userDate: userDate, 
         _csrf_token: csrfToken
     };
 
     saveTrainingResults(data, '/training/pitch/result');
 }
-// --- АНИМАЦИЯ КРУГА ---
 function animateHearingProgressCircle(percentage) {
     const circle = document.getElementById('progressCircleFill');
     const percentText = document.getElementById('progressPercent');
@@ -464,7 +447,6 @@ function animateHearingProgressCircle(percentage) {
     }, 100);
 }
 
-// --- ПРОДОЛЖИТЬ ---
 function continueHearingTraining() {
     document.getElementById('resultScreen').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'flex';

@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Мелодии - Vocal Trainer{% endblock %}
+
+{% block content %}
+<div class="melody-page">
+    {# 👇 ЗАГОЛОВОК #}
+    <div class="learning-header" id="melodyListHeader">
+        <h1 class="page-title">
+            <img src="{{ asset('images/note-icon.png') }}" alt="Мелодии" style="width: 3.5vh; height: 3.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+            Мелодии
+        </h1>
+    </div>
+
+    {# ===== СПИСОК МЕЛОДИЙ ===== #}
+    <div class="melody-container" id="melodyList">
+        {# ===== ЛЕГКИЕ МЕЛОДИИ ===== #}
+        <div class="melody-section">
+            <div class="melody-section-header" onclick="toggleMelodySection(this)">
+                <span class="melody-section-title">🎵 Лёгкие мелодии</span>
+                <span class="melody-section-arrow">▼</span>
+            </div>
+            <div class="melody-section-body">
+                <div class="melody-item" onclick="selectMelody('light', 0)">
+                    <span class="melody-name">Баю-баюшки</span>
+                    <span class="melody-progress" id="melodyLight0">
+                        {% if melodyProgress.light is defined and melodyProgress.light['Баю-баюшки'] is defined %}
+                            {{ melodyProgress.light['Баю-баюшки'] }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {# ===== СЛОЖНЫЕ МЕЛОДИИ ===== #}
+        <div class="melody-section">
+            <div class="melody-section-header" onclick="toggleMelodySection(this)">
+                <span class="melody-section-title">🎵 Сложные мелодии</span>
+                <span class="melody-section-arrow">▼</span>
+            </div>
+            <div class="melody-section-body">
+                <div class="melody-item" onclick="selectMelody('hard', 0)">
+                    <span class="melody-name">Ты да я, да мы с тобой</span>
+                    <span class="melody-progress" id="melodyHard0">
+                        {% if melodyProgress.hard is defined and melodyProgress.hard['Ты да я да мы с тобой'] is defined %}
+                            {{ melodyProgress.hard['Ты да я да мы с тобой'] }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {# ===== ПОЛЬЗОВАТЕЛЬСКИЕ МЕЛОДИИ ===== #}
+        <div class="melody-section">
+            <div class="melody-section-header" onclick="toggleMelodySection(this)">
+                <span class="melody-section-title">🎵 Пользовательские мелодии</span>
+                <span class="melody-section-arrow">▼</span>
+            </div>
+            <div class="melody-section-body">
+                <button class="melody-add-btn" onclick="addUserMelody()">➕ Добавить мелодию</button>
+                <div id="userMelodiesList"></div>
+            </div>
+        </div>
+    </div>
+
+    {# ===== ИГРОВОЙ ЭКРАН ===== #}
+    <div id="melodyGame" class="melody-game">
+        <div class="smule-tuner-container" id="melodyTuner">
+            <div class="smule-tuner-track" id="melodyTunerTrack">
+                <div class="smule-scale" id="melodyTunerScale">
+                    <div class="smule-note" style="top: 10%;">Си</div>
+                    <div class="smule-note" style="top: 22%;">Ля</div>
+                    <div class="smule-note" style="top: 34%;">Соль</div>
+                    <div class="smule-note" style="top: 46%;">Фа</div>
+                    <div class="smule-note" style="top: 58%;">Ми</div>
+                    <div class="smule-note" style="top: 70%;">Ре</div>
+                    <div class="smule-note" style="top: 82%;">До</div>
+                </div>
+                <div class="target-line" id="melodyTargetLine"></div>
+                <div class="voice-arrow" id="melodyVoiceArrow">
+                    <div class="arrow-head">▶</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-container staff-clickable" id="melodyStaff">
+            <div class="staff-clef-block">
+                <div class="staff-lines-clef">
+                    <div class="staff-line" style="top: 10px;"></div>
+                    <div class="staff-line" style="top: 30px;"></div>
+                    <div class="staff-line" style="top: 50px;"></div>
+                    <div class="staff-line" style="top: 70px;"></div>
+                    <div class="staff-line" style="top: 90px;"></div>
+                </div>
+                <div class="treble-clef">𝄞</div>
+            </div>
+            <div class="staff-notes-scroll" id="melodyStaffScroll">
+                <div class="staff-wrapper-scroll" id="melodyStaffWrapper">
+                    <div class="staff-lines">
+                        <div class="staff-line" style="top: 0px;"></div>
+                        <div class="staff-line" style="top: 20px;"></div>
+                        <div class="staff-line" style="top: 40px;"></div>
+                        <div class="staff-line" style="top: 60px;"></div>
+                        <div class="staff-line" style="top: 80px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# 👇 КНОПКА ЗАПИСИ #}
+        <div class="melody-controls">
+            <button class="btn-melody" id="melodyRecordBtn" onclick="melodyRecord()">
+                🎤 Записать
+            </button>
+        </div>
+
+        {# 👇 РЕЗУЛЬТАТ (СКРЫТ ПО УМОЛЧАНИЮ) #}
+        <div id="melodyResult" class="result-feedback" style="display: none;"></div>
+    </div>
+
+    {# ===== ЭКРАН РЕЗУЛЬТАТА ===== #}
+    <div id="melodyResultScreen" class="result-screen" style="display: none;">
+        <div class="result-header">
+            <h2 class="result-title">Мелодия пройдена!</h2>
+        </div>
+        
+        <div class="accuracy-section">
+            <div class="accuracy-label">Точность попадания:</div>
+            <div class="progress-circle-container">
+                <svg class="progress-circle" viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="melodyProgressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#6c5ce7;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
+                    <circle class="progress-circle-fill" cx="100" cy="100" r="90" 
+                            id="melodyProgressCircleFill"
+                            stroke-dasharray="565.486" 
+                            stroke-dashoffset="565.486"></circle>
+                </svg>
+                <div class="progress-circle-text">
+                    <span class="progress-percent" id="melodyProgressPercent">0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="motivation-box">
+            <p class="motivation-text" id="melodyMotivationText">Загрузка...</p>
+        </div>
+        
+        <button class="btn-continue" onclick="goBackToMelodyList()">
+            ← Назад к мелодиям
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/notes.js') }}"></script>
+    <script src="{{ asset('js/melody.js') }}"></script>
+    <script src="{{ asset('js/audio-utils.js') }}"></script>
+    <script src="{{ asset('js/scoring.js') }}"></script>
+    <script src="{{ asset('js/results.js') }}"></script>
+    <script src="{{ asset('js/motivations.js') }}"></script>
+{% endblock %}

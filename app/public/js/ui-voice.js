@@ -1,5 +1,3 @@
-// ui-voice.js
-
 function drawNoteOnStaff(noteName) {
     const wrapper = document.getElementById('staffWrapperScroll');
     if (!wrapper) return;
@@ -62,7 +60,6 @@ function updateVoiceLine(freq, target) {
     const h = track.offsetHeight;
     if (h === 0) return;
     
-    // 👇 ПОЗИЦИИ НОТ (В ПРОЦЕНТАХ)
     const notePositions = {
         'Си': 10,
         'Ля': 22,
@@ -73,7 +70,6 @@ function updateVoiceLine(freq, target) {
         'До': 82
     };
     
-    // 👇 ИЩЕМ БЛИЖАЙШУЮ НОТУ
     let closestPos = 50;
     let closestDiff = Infinity;
     
@@ -81,7 +77,6 @@ function updateVoiceLine(freq, target) {
         const noteFreq = NOTE_FREQ_MAP[note];
         if (!noteFreq) continue;
         
-        // 👇 ПРОВЕРЯЕМ ВСЕ ОКТАВЫ
         const octaves = [0.25, 0.5, 1, 2, 4];
         for (const octave of octaves) {
             const testFreq = noteFreq * octave;
@@ -93,7 +88,6 @@ function updateVoiceLine(freq, target) {
         }
     }
     
-    // 👇 МГНОВЕННО ДВИГАЕМ СТРЕЛКУ (БЕЗ ПЛАВНОСТИ!)
     const pixelPos = ((closestPos / 100) * h - 14);
     const minPixel = -14;
     const maxPixel = h - 14;
@@ -101,19 +95,18 @@ function updateVoiceLine(freq, target) {
     
     arrow.style.top = clampedTop + 'px';
     
-    // 👇 ЦВЕТ КРУЖКА (ЗЕЛЁНЫЙ/КРАСНЫЙ)
     const cents = Math.abs(1200 * Math.log2(freq / target));
     const isInTune = cents < 30;
     
     const head = arrow.querySelector('.arrow-head');
     if (isInTune) {
-        arrow.style.color = '#00c853'; // ЗЕЛЁНЫЙ
+        arrow.style.color = '#00c853'; 
         if (head) {
             head.style.color = 'white';
             head.style.textShadow = '0 0 10px rgba(0,0,0,0.5)';
         }
     } else {
-        arrow.style.color = '#ff6b6b'; // КРАСНЫЙ
+        arrow.style.color = '#ff6b6b'; 
         if (head) {
             head.style.color = 'white';
             head.style.textShadow = '0 0 10px rgba(0,0,0,0.5)';
@@ -202,8 +195,8 @@ function showResult(points, hitSeconds) {
     const fb = document.getElementById('resultFeedback');
     if (!fb) return;
     fb.textContent = points > 0
-        ? `✅ +${points} баллов (${hitSeconds.toFixed(1)}с в ноте)`
-        : '❌ 0 баллов';
+        ? `+${points} баллов (${hitSeconds.toFixed(1)}с в ноте)`
+        : '0 баллов';
     fb.className = 'result-feedback ' + (points > 0 ? 'success' : 'fail');
     fb.style.display = 'block';
 }

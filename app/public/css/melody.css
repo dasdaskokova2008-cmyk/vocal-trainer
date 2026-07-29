@@ -1,0 +1,587 @@
+
+.melody-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2vh;
+}
+
+.melody-section {
+    margin-bottom: 1.5vh;
+    border: 1px solid var(--border-color);
+    border-radius: 1.5vh;
+    overflow: hidden;
+    background: var(--bg-secondary);
+}
+
+.melody-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5vh 2vh;
+    cursor: pointer;
+    background: var(--bg-primary);
+    transition: background 0.3s ease;
+}
+
+.melody-section-header:hover {
+    background: var(--bg-secondary);
+}
+
+.melody-section-title {
+    font-weight: 600;
+    font-size: 2vh;
+    color: var(--text-primary);
+}
+
+.melody-section-arrow {
+    font-size: 1.5vh;
+    transition: transform 0.3s ease;
+    color: var(--text-muted);
+}
+
+.melody-section.open .melody-section-arrow {
+    transform: rotate(180deg);
+}
+
+.melody-section-body {
+    display: none;
+    padding: 1vh;
+}
+
+.melody-section.open .melody-section-body {
+    display: block;
+}
+
+.melody-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2vh 1.5vh;
+    border-radius: 1vh;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.melody-item:hover:not(.disabled) {
+    background: rgba(74, 158, 255, 0.08);
+}
+
+.melody-item.disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.melody-item.disabled:hover {
+    background: none;
+}
+
+.melody-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.melody-progress {
+    font-weight: 600;
+    color: var(--accent-primary);
+    font-size: 1.6vh;
+}
+
+.melody-add-btn {
+    width: 100%;
+    padding: 1.2vh;
+    border: 2px dashed var(--border-color);
+    border-radius: 1vh;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.6vh;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.melody-add-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+
+.melody-game {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5vh;
+    padding: 2vh;
+    width: 100%;
+}
+
+.melody-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 1vh;
+    margin-bottom: 1vh;
+}
+
+.melody-title {
+    font-size: 2.5vh;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-back {
+    padding: 0.8vh 2vh;
+    border: none;
+    border-radius: 2vh;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 1.8vh;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.btn-back:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+
+#melodyResultScreen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 50px 40px;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    max-width: 550px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    margin: 0 auto;
+}
+
+#melodyResultScreen .result-header {
+    text-align: center;
+}
+
+#melodyResultScreen .result-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#melodyResultScreen .accuracy-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+#melodyResultScreen .accuracy-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+#melodyResultScreen .progress-circle-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 10px 0;
+}
+
+#melodyResultScreen .progress-circle {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+#melodyResultScreen .progress-circle-bg {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 12;
+}
+
+#melodyResultScreen .progress-circle-fill {
+    fill: none;
+    stroke: url(#melodyProgressGradient);
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease;
+}
+
+#melodyResultScreen .progress-circle-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#melodyResultScreen .progress-percent {
+    font-size: 56px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+#melodyResultScreen .score-summary {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+
+#melodyResultScreen .score-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-primary);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+#melodyResultScreen .score-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+#melodyResultScreen .score-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent-primary);
+    margin: 0;
+}
+
+#melodyResultScreen .score-item:first-child {
+    display: none !important;
+}
+
+#melodyResultScreen .score-item:last-child {
+    display: flex !important;
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(108, 92, 231, 0.1));
+    border: 2px solid rgba(74, 158, 255, 0.3);
+}
+
+#melodyResultScreen .score-item:last-child .score-label {
+    font-size: 16px;
+}
+
+#melodyResultScreen .score-item:last-child .score-value {
+    font-size: 26px;
+}
+#melodyResultScreen .motivation-box {
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(108, 92, 231, 0.1));
+    border: 2px solid rgba(74, 158, 255, 0.3);
+    border-radius: 16px;
+    padding: 25px 30px;
+    text-align: center;
+    width: 100%;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#melodyResultScreen .motivation-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+#melodyResultScreen .btn-continue {
+    width: 100%;
+    padding: 18px 30px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(90deg, #4a9eff, #6c5ce7);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(74, 158, 255, 0.4);
+    margin-top: 10px;
+}
+
+#melodyResultScreen .btn-continue:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(74, 158, 255, 0.5);
+}
+
+
+#melodyTuner {
+    display: none;
+    width: calc(100vw - 300px);
+    max-width: 1200px;
+    min-width: 600px;
+    margin: 0 auto 1.5vh;
+    box-sizing: border-box;
+    align-self: center;
+    order: -1;
+}
+
+#melodyTuner .smule-tuner-track {
+    height: 300px;
+    position: relative;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+}
+
+
+.smule-scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 6;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-primary);
+}
+
+.smule-note {
+    position: absolute;
+    left: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+.target-line {
+    position: absolute;
+    left: 30%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    z-index: 4;
+    background: rgba(128, 128, 128, 0.7);
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.3);
+}
+
+[data-theme="dark"] .target-line {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+
+.melody-note-block {
+    position: absolute;
+    height: 28px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 2;
+    box-sizing: border-box;
+    transition: none;
+    transform: translateY(-50%);
+}
+
+.melody-note-block.waiting {
+    background: rgba(74, 158, 255, 0.25);
+    border: 2px solid rgba(74, 158, 255, 0.5);
+}
+
+.melody-note-block.current {
+    background: rgba(74, 158, 255, 0.85);
+    border: 2px solid #4a9eff;
+    box-shadow: 0 0 30px rgba(74, 158, 255, 0.7), inset 0 0 15px rgba(255,255,255,0.2);
+    z-index: 3;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.melody-note-block.done {
+    background: rgba(0, 200, 83, 0.7);
+    border: 2px solid #00c853;
+    box-shadow: 0 0 20px rgba(0, 200, 83, 0.5);
+    opacity: 0.8;
+}
+
+
+.voice-arrow {
+    position: absolute;
+    left: 30%;
+    z-index: 10;
+    transition: top 0.08s linear;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow-head {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #ff1744, #ff5252);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 0 20px rgba(255, 23, 68, 0.7);
+    transition: all 0.15s ease;
+}
+
+.voice-arrow.hit .arrow-head {
+    background: linear-gradient(135deg, #00E676, #69F0AE) !important;
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.9) !important;
+}
+
+.melody-note {
+    position: absolute;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.melody-note.current .note-dot {
+    border-color: #4a9eff;
+    box-shadow: 0 0 20px rgba(74, 158, 255, 0.6) !important;
+}
+
+.melody-note.current .note-stem {
+    background: #4a9eff;
+}
+
+.melody-note.current .melody-lyric {
+    color: #4a9eff;
+    background: rgba(74, 158, 255, 0.2);
+    text-shadow: 0 0 30px rgba(74, 158, 255, 0.5);
+    font-size: 1.8vh;
+}
+
+.melody-note .note-dot {
+    position: absolute;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.melody-note .note-stem {
+    position: absolute;
+    transform: translateY(-100%);
+    transition: all 0.3s ease;
+}
+
+.melody-note .melody-lyric {
+    position: absolute;
+    top: -10px;  
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5vh;
+    font-weight: 700;
+    color: #888;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    padding: 0.2vh 0.8vh;
+    border-radius: 0.5vh;
+    background: transparent;
+    pointer-events: none;
+    text-align: center;
+    min-width: 20px;
+    line-height: 1.2;
+}
+
+.melody-note.current .melody-lyric {
+    color: #4a9eff;
+    background: rgba(74, 158, 255, 0.2);
+    text-shadow: 0 0 30px rgba(74, 158, 255, 0.5);
+    font-size: 1.8vh;
+    top: -32px;  
+}
+
+.melody-controls {
+    display: flex;
+    gap: 1.5vh;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1vh;
+}
+
+.btn-melody {
+    padding: 1.2vh 3vh;
+    border: none;
+    border-radius: 3vh;
+    font-size: 1.8vh;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 14vh;
+}
+
+.btn-melody:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#melodyRecordBtn {
+    background: linear-gradient(135deg, #ff1744, #ff5252);
+    color: white;
+}
+
+#melodyRecordBtn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 23, 68, 0.4);
+}
+
+#melodyRecordBtn:disabled {
+    background: linear-gradient(135deg, #555, #333) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+
+#melodyGame,
+#melodyTuner,
+#melodyResult {
+    display: none;
+}
+
+#melodyListHeader,
+#melodyList {
+    display: block;
+}
+
+
+.progress-container,
+.melody-lyrics,
+.melody-score-display,
+#melodyPlayBtn {
+    display: none !important;
+}
+
+
+.score-summary {
+    display: none;
+}

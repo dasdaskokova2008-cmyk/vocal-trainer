@@ -23,14 +23,12 @@ class ProfileController extends AbstractController
         }
 
         if (!$user->getAvatar()) {
-            // 👇 ВЫБИРАЕМ СЛУЧАЙНЫЙ АВАТАР ИЗ 63
             $randomId = rand(1, 63);
             $randomAvatar = 'avatar_' . $randomId . '.png';
             $user->setAvatar($randomAvatar);
             
-            // 👇 РАЗБЛОКИРОВАН ТОЛЬКО ЭТОТ АВАТАР (ЕГО ID!)
             if (!$user->getUnlockedAvatars()) {
-                $user->setUnlockedAvatars([$randomId]);  // 👈 ПРАВИЛЬНО!
+                $user->setUnlockedAvatars([$randomId]); 
             }
             $em->flush();
         }
@@ -59,11 +57,11 @@ class ProfileController extends AbstractController
 
         if (!empty($username)) {
             if (!preg_match('/^[A-Za-z0-9]+$/', $username)) {
-                return $this->json(['success' => false, 'error' => '❌ Только латиница и цифры']);
+                return $this->json(['success' => false, 'error' => 'Только латиница и цифры']);
             }
             $existing = $em->getRepository(User::class)->findOneBy(['username' => $username]);
             if ($existing && $existing->getId() !== $user->getId()) {
-                return $this->json(['success' => false, 'error' => '❌ Логин уже занят']);
+                return $this->json(['success' => false, 'error' => 'Логин уже занят']);
             }
             $user->setUsername($username);
         }
@@ -74,13 +72,13 @@ class ProfileController extends AbstractController
 
         if ($oldPassword && $newPassword && $confirmPassword) {
             if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
-                return $this->json(['success' => false, 'error' => '❌ Неверный старый пароль']);
+                return $this->json(['success' => false, 'error' => 'Неверный старый пароль']);
             }
             if (strlen($newPassword) < 6) {
-                return $this->json(['success' => false, 'error' => '❌ Пароль должен быть минимум 6 символов']);
+                return $this->json(['success' => false, 'error' => 'Пароль должен быть минимум 6 символов']);
             }
             if ($newPassword !== $confirmPassword) {
-                return $this->json(['success' => false, 'error' => '❌ Пароли не совпадают']);
+                return $this->json(['success' => false, 'error' => 'Пароли не совпадают']);
             }
             $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
         }
@@ -111,15 +109,15 @@ class ProfileController extends AbstractController
         $confirmPassword = $data['confirmPassword'] ?? '';
 
         if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
-            return $this->json(['success' => false, 'error' => '❌ Неверный старый пароль']);
+            return $this->json(['success' => false, 'error' => 'Неверный старый пароль']);
         }
 
         if (strlen($newPassword) < 6) {
-            return $this->json(['success' => false, 'error' => '❌ Пароль должен быть минимум 6 символов']);
+            return $this->json(['success' => false, 'error' => 'Пароль должен быть минимум 6 символов']);
         }
 
         if ($newPassword !== $confirmPassword) {
-            return $this->json(['success' => false, 'error' => '❌ Пароли не совпадают']);
+            return $this->json(['success' => false, 'error' => 'Пароли не совпадают']);
         }
 
         $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
@@ -140,12 +138,12 @@ class ProfileController extends AbstractController
         $email = trim($data['email'] ?? '');
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->json(['success' => false, 'error' => '❌ Неверный email']);
+            return $this->json(['success' => false, 'error' => 'Неверный email']);
         }
 
         $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($existing && $existing->getId() !== $user->getId()) {
-            return $this->json(['success' => false, 'error' => '❌ Email уже занят']);
+            return $this->json(['success' => false, 'error' => 'Email уже занят']);
         }
 
         $user->setEmail($email);
@@ -170,7 +168,7 @@ class ProfileController extends AbstractController
         $confirm = $data['confirm'] ?? false;
 
         if (!$confirm) {
-            return $this->json(['success' => false, 'error' => '❌ Подтвердите удаление']);
+            return $this->json(['success' => false, 'error' => 'Подтвердите удаление']);
         }
 
         $em->remove($user);
@@ -222,7 +220,6 @@ class ProfileController extends AbstractController
         }
 
         $unlocked = $user->getUnlockedAvatars() ?? [];
-        // 👇 ВСЕ 63 АВАТАРА
         $allAvatars = range(1, 63);
         $available = array_diff($allAvatars, $unlocked);
 
@@ -259,7 +256,6 @@ class ProfileController extends AbstractController
 
         $unlocked = $user->getUnlockedAvatars() ?? [];
         
-        // 👇 ЕСЛИ НЕТ РАЗБЛОКИРОВАННЫХ - ДОБАВЛЯЕМ ПЕРВЫЙ
         if (empty($unlocked)) {
             $unlocked = [1];
             $user->setUnlockedAvatars($unlocked);

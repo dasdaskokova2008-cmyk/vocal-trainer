@@ -1,8 +1,4 @@
-/* ========================================
-   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ (НЕ ТРОГАЮТ ШАПКУ)
-   ======================================== */
 
-/* ---- ТЕОРИЯ ИНТЕРВАЛОВ (аккордеон) ---- */
 .theory-accordion {
     display: flex;
     flex-direction: column;
@@ -91,7 +87,6 @@
     border: 1px dashed var(--border-color);
 }
 
-/* ---- ИНТЕРВАЛЫ (карточки выбора) ---- */
 .interval-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -179,11 +174,6 @@
 }
 
 
-
-/* ========================================
-   ПРОФИЛЬ
-   ======================================== */
-
 .profile-page {
     display: flex;
     flex-direction: column;
@@ -203,7 +193,6 @@
     box-shadow: var(--shadow);
 }
 
-/* ----- АВАТАР И ИМЯ ----- */
 .profile-avatar-section {
     display: flex;
     flex-direction: column;
@@ -239,7 +228,6 @@
     font-weight: 400;
 }
 
-/* ----- ОЧКИ И СЕРИЯ ----- */
 .profile-score-section {
     display: flex;
     gap: 40px;
@@ -270,7 +258,6 @@
     color: var(--accent-primary);
 }
 
-/* ----- EMAIL ----- */
 .profile-email-section {
     display: flex;
     align-items: center;
@@ -325,7 +312,6 @@
     color: white;
 }
 
-/* ----- СТАТИСТИКА ----- */
 .profile-stats-section {
     padding: 30px 0;
     border-bottom: 1px solid var(--border-color);
@@ -422,7 +408,6 @@
     color: var(--text-primary);
 }
 
-/* ----- КНОПКИ ----- */
 .profile-actions-wrapper {
     display: flex;
     flex-direction: column;
@@ -484,7 +469,6 @@
     background: #d50000;
 }
 
-/* ----- МОДАЛКА РЕДАКТИРОВАНИЯ ----- */
 .edit-avatar-wrapper {
     position: relative;
     width: 120px;
@@ -541,7 +525,6 @@
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
 }
 
-/* ----- ПОЛЯ РЕДАКТИРОВАНИЯ ----- */
 .edit-field {
     margin-bottom: 16px;
 }
@@ -591,7 +574,6 @@
     color: var(--accent-primary);
 }
 
-/* ----- АВАТАРЫ В МОДАЛКЕ ----- */
 #avatarSelectorContainer {
     margin-top: 8px;
 }
@@ -638,9 +620,6 @@
     border-color: transparent;
 }
 
-/* ----- АДАПТАЦИЯ ----- */
-
-
 .avatar-option.selected {
     border-color: #00c853 !important;
     box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.4);
@@ -682,14 +661,12 @@
     filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.5));
 }
 
-/* Огонёк активный — яркий */
 .streak-icon.active {
     opacity: 1;
     filter: none;
     transition: all 0.3s ease;
 }
 
-/* Огонёк неактивный — серый */
 .streak-icon.inactive {
     opacity: 0.3;
     filter: grayscale(1);

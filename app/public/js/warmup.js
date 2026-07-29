@@ -25,10 +25,8 @@ function shouldShowIntro() {
 }
 
 function skipIntroForever() {
-    // Сохраняем в localStorage
     localStorage.setItem('skip_warmup_intro', 'true');
     
-    // Сохраняем в БД
     fetch('/profile/skip-intro', {
         method: 'POST',
         headers: {
@@ -40,10 +38,10 @@ function skipIntroForever() {
     .then(data => {
         if (data.success) {
         } else {
-            console.error('❌ Ошибка сохранения skip_intro');
+            console.error('Ошибка сохранения skip_intro');
         }
     })
-    .catch(err => console.error('❌ Ошибка:', err));
+    .catch(err => console.error('Ошибка:', err));
     
     document.getElementById('warmupIntro').style.display = 'none';
     startCountdown();
@@ -184,10 +182,8 @@ function onVideoEnd() {
     if (result) result.style.display = 'block';
     
     if (!pointsAdded) {
-        // 👇 ПОЛУЧАЕМ CSRF ТОКЕН
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         
-        // 👇 ФОРМИРУЕМ ПРАВИЛЬНЫЕ ДАННЫЕ
         const data = {
             type: 'voice',
             difficulty: 'easy',
@@ -198,7 +194,7 @@ function onVideoEnd() {
                 { hitTime: 4.5, success: true }
             ],
             percentage: 100,
-            userDate: getTodayUserDate(), // 👈 ДОБАВЛЯЕМ ДАТУ
+            userDate: getTodayUserDate(), 
             _csrf_token: csrfToken
         };
         
@@ -209,7 +205,6 @@ function onVideoEnd() {
     }
 }
 
-// 👇 ДОБАВЬ ФУНКЦИЮ getTodayUserDate() В warmup.js
 function getTodayUserDate() {
     const now = new Date();
     return now.getFullYear() + '-' + 

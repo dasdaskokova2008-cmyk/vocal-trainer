@@ -28,8 +28,6 @@ function updateThemeIcon(theme) {
     }
 }
 
-// public/js/header-updater.js
-
 function updateHeaderStats() {
     fetch('/api/user/stats')
         .then(response => response.json())
@@ -68,21 +66,17 @@ function updateHeaderStats() {
                 });
             }
         })
-        .catch(err => console.error('❌ Ошибка обновления шапки:', err));
+        .catch(err => console.error('Ошибка обновления шапки:', err));
 }
 
-// 👇 ПРИ ПЕРВОЙ ЗАГРУЗКЕ
 document.addEventListener('DOMContentLoaded', function() {
     updateHeaderStats();
-    // setInterval(updateHeaderStats, 30000); // ❌ УБРАЛИ!
 });
 
-// 👇 ПРИ ВОЗВРАТЕ ПО СТРЕЛКЕ "НАЗАД"
 window.addEventListener('pageshow', function() {
     updateHeaderStats();
 });
 
-// 👇 ПРИ ПЕРЕКЛЮЧЕНИИ ВКЛАДКИ
 document.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'visible') {
         updateHeaderStats();

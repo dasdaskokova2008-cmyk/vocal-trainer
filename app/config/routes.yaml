@@ -133,3 +133,21 @@ api_user_stats:
     path: /api/user/stats
     controller: App\Controller\TrainingController::getUserStats
     methods: GET
+
+# ============================================
+# МЕЛОДИИ
+# ============================================
+
+training_melody:
+    path: /training/melody
+    controller: App\Controller\TrainingController::melody
+
+api_melody_progress:
+    path: /api/user/melody-progress
+    controller: App\Controller\TrainingController::getMelodyProgress
+    methods: GET
+
+api_melody_result:
+    path: /api/melody/result
+    controller: App\Controller\TrainingController::saveMelodyResult
+    methods: POST
