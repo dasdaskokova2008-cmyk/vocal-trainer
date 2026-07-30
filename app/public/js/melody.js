@@ -1314,7 +1314,7 @@ function updateCurrentNote() {
             const lyric = el.querySelector('.melody-lyric');
             const flags = el.querySelectorAll('.note-flag');
             const acc = el.querySelector('.note-accidental');
-            const dotPoint = el.querySelector('.dot-point'); /
+            const dotPoint = el.querySelector('.dot-point'); 
             if (isPause) {
                 if (dot) dot.style.opacity = '0';
                 if (stem) stem.style.opacity = '0';
