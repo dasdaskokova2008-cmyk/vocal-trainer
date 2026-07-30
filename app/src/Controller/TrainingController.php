@@ -417,18 +417,42 @@ class TrainingController extends AbstractController
     }
 
     #[Route('/api/melody/result', name: 'api_melody_result', methods: ['POST'])]
-    public function saveMelodyResult(Request $request, EntityManagerInterface $em): JsonResponse
-    {
+    public function saveMelodyResult(
+        Request $request, 
+        EntityManagerInterface $em,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
             return $this->json(['error' => 'Не авторизован'], 401);
         }
 
         $data = json_decode($request->getContent(), true);
+        
+        $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('melody_result', $csrfToken))) {
+            return $this->json(['error' => 'Неверный CSRF токен'], 403);
+        }
+
         $type = $data['type'] ?? 'light';
         $melodyKey = $data['melodyKey'] ?? '';
         $percentage = (int)($data['percentage'] ?? 0);
         $score = (int)($data['score'] ?? 0);
+
+        $allowedKeys = array_merge(
+            array_keys($this->getMelodiesLight()),
+            array_keys($this->getMelodiesHard())
+        );
+        if (!in_array($melodyKey, $allowedKeys, true)) {
+            return $this->json(['error' => 'Недопустимая мелодия'], 400);
+        }
+
+        if ($percentage < 0 || $percentage > 100) {
+            return $this->json(['error' => 'Недопустимый процент'], 400);
+        }
+        if ($score < 0 || $score > 1000) {
+            return $this->json(['error' => 'Недопустимое количество очков'], 400);
+        }
 
         $user->setScore($user->getScore() + $score);
 
@@ -463,7 +487,6 @@ class TrainingController extends AbstractController
             $lastDate = $lastActivity->format('Y-m-d');
             $todayStr = $today->format('Y-m-d');
             $yesterdayStr = (new \DateTime('yesterday'))->format('Y-m-d');
-            
             if ($lastDate === $todayStr) {
             } elseif ($lastDate === $yesterdayStr) {
                 $user->setStreak($currentStreak + 1);
@@ -483,6 +506,22 @@ class TrainingController extends AbstractController
             'newStreak' => $user->getStreak(),
         ]);
     }
+    private function getMelodiesLight(): array
+    {
+        return [
+            'Баю-баюшки' => true,
+        ];
+    }
+
+    private function getMelodiesHard(): array
+    {
+        return [
+            'Ты да я, да мы с тобой' => true,
+            'Катюша' => true,
+        ];
+    }
+
+
     #[Route('/training/melody', name: 'training_melody')]
     public function melody(EntityManagerInterface $em): Response
     {

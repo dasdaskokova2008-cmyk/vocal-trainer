@@ -41,14 +41,24 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/profile/update', name: 'profile_update', methods: ['POST'])]
-    public function update(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
-    {
+    public function update(
+        Request $request, 
+        EntityManagerInterface $em, 
+        UserPasswordHasherInterface $passwordHasher,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
             return $this->json(['success' => false, 'error' => 'Не авторизован'], 401);
         }
 
         $data = json_decode($request->getContent(), true);
+        
+        $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('', $csrfToken))) {
+            return $this->json(['success' => false, 'error' => 'Неверный CSRF токен'], 403);
+        }
+
         $username = trim($data['username'] ?? '');
         $avatar = $data['avatar'] ?? null;
         $oldPassword = $data['oldPassword'] ?? null;
@@ -67,6 +77,10 @@ class ProfileController extends AbstractController
         }
 
         if ($avatar) {
+            if (!preg_match('/^avatar_(\d+)\.png$/', $avatar, $matches) || 
+                (int)$matches[1] < 1 || (int)$matches[1] > 63) {
+                return $this->json(['success' => false, 'error' => 'Недопустимый аватар'], 400);
+            }
             $user->setAvatar($avatar);
         }
 
@@ -96,7 +110,8 @@ class ProfileController extends AbstractController
     public function changePassword(
         Request $request,
         EntityManagerInterface $em,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        CsrfTokenManagerInterface $csrfTokenManager
     ): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
@@ -104,6 +119,12 @@ class ProfileController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+        
+        $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('pitch_result', $csrfToken))) {
+            return $this->json(['success' => false, 'error' => 'Неверный CSRF токен'], 403);
+        }
+
         $oldPassword = $data['oldPassword'] ?? '';
         $newPassword = $data['newPassword'] ?? '';
         $confirmPassword = $data['confirmPassword'] ?? '';
@@ -111,11 +132,9 @@ class ProfileController extends AbstractController
         if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
             return $this->json(['success' => false, 'error' => 'Неверный старый пароль']);
         }
-
         if (strlen($newPassword) < 6) {
             return $this->json(['success' => false, 'error' => 'Пароль должен быть минимум 6 символов']);
         }
-
         if ($newPassword !== $confirmPassword) {
             return $this->json(['success' => false, 'error' => 'Пароли не совпадают']);
         }
@@ -166,18 +185,30 @@ class ProfileController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         $confirm = $data['confirm'] ?? false;
-
+        
         if (!$confirm) {
             return $this->json(['success' => false, 'error' => 'Подтвердите удаление']);
         }
 
-        $em->remove($user);
-        $em->flush();
+        try {
+            $em->remove($user);
+            $em->flush();
+            
+            $tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
 
-        $tokenStorage->setToken(null);
-        $request->getSession()->invalidate();
-
-        return $this->json(['success' => true]);
+            return $this->json(['success' => true]);
+        } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+            return $this->json([
+                'success' => false, 
+                'error' => 'Невозможно удалить аккаунт: существуют связанные записи тренировок. (Требуется миграция БД)'
+            ], 400);
+        } catch (\Exception $e) {
+            return $this->json([
+                'success' => false, 
+                'error' => 'Произошла ошибка при удалении: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     #[Route('/profile/stats', name: 'profile_stats')]
@@ -208,11 +239,20 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/profile/unlock-avatar', name: 'profile_unlock_avatar', methods: ['POST'])]
-    public function unlockAvatar(EntityManagerInterface $em): JsonResponse
-    {
+    public function unlockAvatar(
+        EntityManagerInterface $em,
+        Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
             return $this->json(['success' => false, 'error' => 'Не авторизован'], 401);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('pitch_result', $csrfToken))) {
+            return $this->json(['success' => false, 'error' => 'Неверный CSRF токен'], 403);
         }
 
         if ($user->getScore() < 1000) {

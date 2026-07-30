@@ -1822,19 +1822,21 @@ function saveMelodyResult(percent, pointsToAdd) {
     if (melodyState.melodyProgress && melodyState.melodyProgress.light) {
         currentProgress = melodyState.melodyProgress.light[melodyState.currentMelodyKey] || 0;
     }
-    
     const bestPercent = Math.max(currentProgress, percent);
-    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'); 
     const data = {
         type: melodyState.currentMelodyType,
         melodyKey: melodyState.currentMelodyKey,
         percentage: bestPercent,
-        score: pointsToAdd  
+        score: pointsToAdd,
+        _csrf_token: csrfToken  
     };
-    
     fetch('/api/melody/result', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken  
+        },
         body: JSON.stringify(data)
     })
     .then(response => response.json())
@@ -1844,12 +1846,10 @@ function saveMelodyResult(percent, pointsToAdd) {
                 melodyState.melodyProgress.light = {};
             }
             melodyState.melodyProgress.light[melodyState.currentMelodyKey] = bestPercent;
-            
             const el = document.getElementById('melodyLight0');
             if (el) {
                 el.textContent = bestPercent + '%';
             }
-            
             if (result.newTotalScore !== undefined) {
                 const scoreElements = document.querySelectorAll('#headerScore, #profileScore');
                 scoreElements.forEach(el => {

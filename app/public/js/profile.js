@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function preloadAvatars() {
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 63; i++) {
         const img = new Image();
         img.src = '/images/avatars/avatar_' + i + '.png';
     }
@@ -90,11 +90,17 @@ function saveAvatar() {
         showToast('Выберите аватар', 'error');
         return;
     }
-
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     fetch('/profile/update', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ avatar: selectedAvatar })
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken  
+        },
+        body: JSON.stringify({ 
+            avatar: selectedAvatar,
+            _csrf_token: csrfToken  
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -150,6 +156,7 @@ function saveUsername() {
     status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
+    // 1. Проверяем занятость
     fetch('/check-username?username=' + encodeURIComponent(username))
         .then(response => response.json())
         .then(data => {
@@ -158,29 +165,47 @@ function saveUsername() {
                 status.className = 'input-status error';
                 return;
             }
-
+            
+            // 2. Если свободен, сохраняем
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            
             fetch('/profile/update', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username })
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
+                },
+                body: JSON.stringify({ 
+                    username: username,
+                    _csrf_token: csrfToken  
+                })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     status.innerHTML = 'Логин обновлён!';
                     status.className = 'input-status success';
+                    
                     document.getElementById('displayUsername').textContent = username;
-                    document.querySelector('.profile-name .at-symbol').nextSibling.textContent = username;
+                    const atSymbol = document.querySelector('.profile-name .at-symbol');
+                    if (atSymbol && atSymbol.nextSibling) {
+                        atSymbol.nextSibling.textContent = ' ' + username;
+                    }
                     document.querySelector('.user-info .username').textContent = username;
+                    
                     setTimeout(() => closeUsernameEditor(), 500);
                 } else {
                     status.innerHTML = data.error || 'Ошибка';
                     status.className = 'input-status error';
                 }
+            })
+            .catch(() => {
+                status.innerHTML = 'Ошибка сервера при сохранении';
+                status.className = 'input-status error';
             });
         })
         .catch(() => {
-            status.innerHTML = 'Ошибка проверки';
+            status.innerHTML = 'Ошибка проверки логина';
             status.className = 'input-status error';
         });
 }
@@ -225,10 +250,19 @@ function savePassword() {
     status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     fetch('/profile/change-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ oldPassword, newPassword, confirmPassword })
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken  
+        },
+        body: JSON.stringify({ 
+            oldPassword, 
+            newPassword, 
+            confirmPassword,
+            _csrf_token: csrfToken 
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -250,7 +284,6 @@ function savePassword() {
 function bindEmail() {
     window.location.href = '/google/login';
 }
-
 
 function loadAvatars() {
     fetch('/profile/avatars')
@@ -298,10 +331,16 @@ function unlockRandomAvatar() {
     status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     fetch('/profile/unlock-avatar', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({})
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken  
+        },
+        body: JSON.stringify({ 
+            _csrf_token: csrfToken  
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -327,6 +366,7 @@ function unlockRandomAvatar() {
         status.className = 'input-status error';
     });
 }
+
 function confirmLogout() {
     document.getElementById('confirmLogoutModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -352,10 +392,17 @@ function closeConfirmDelete() {
 }
 
 function deleteAccount() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     fetch('/profile/delete', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ confirm: true })
+        headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken  
+        },
+        body: JSON.stringify({ 
+            confirm: true,
+            _csrf_token: csrfToken 
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -365,7 +412,6 @@ function deleteAccount() {
     })
     .catch(err => console.error('Ошибка удаления:', err));
 }
-
 
 function showToast(message, type) {
     const existing = document.querySelector('.toast-notification');

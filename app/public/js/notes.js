@@ -43,7 +43,6 @@ const NOTES_RU = {
     'До2♭': { freq: 500, position: 2 },
     'Си1♯': { freq: 262.295, position: 5.5 },  
     'Ми2♯': { freq: 705.882, position: 0.5 },
-    'Фа2♭': { freq: 666.666, position: 0.5 },
 };
 
 const AVAILABLE_NOTES = ['До', 'Ре', 'Ми', 'Фа', 'Соль', 'Ля', 'Си'];
