@@ -205,5 +205,5 @@ function updateProgressBar() {
     const p = (voiceGameState.currentTest / voiceGameState.totalTests) * 100;
     document.getElementById('progressFill').style.width = p + '%';
     document.getElementById('progressText').textContent = `${voiceGameState.currentTest} из ${voiceGameState.totalTests}`;
-    document.getElementById('scoreText').textContent = `⭐ ${voiceGameState.score} баллов`;
+    document.getElementById('scoreText').innerHTML = `<img src="/images/star-icon.png" alt="Баллы" class="score-icon"> ${voiceGameState.score} баллов`;
 }

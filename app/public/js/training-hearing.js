@@ -378,7 +378,10 @@ function updateHearingProgress() {
     document.getElementById('progressFill').style.width = p + '%';
     document.getElementById('progressText').textContent = `${hearingGameState.currentTest} из ${hearingGameState.totalTests}`;
     
-    document.getElementById('scoreText').textContent = `⭐ ${hearingGameState.score} баллов`;
+    document.getElementById('scoreText').innerHTML = `
+        <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+        ${hearingGameState.score} баллов
+    `;
 }
 
 function finishHearingTest() {

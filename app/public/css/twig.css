@@ -1,0 +1,140 @@
+.learning-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.rating-table-container {
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    overflow-x: auto;
+}
+
+.rating-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.rating-table thead tr {
+    border-bottom: 2px solid var(--border-color);
+}
+
+.rating-table th {
+    padding: 15px 10px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.rating-table th:first-child {
+    width: 60px;
+}
+
+.rating-table th:nth-child(2) {
+    text-align: left;
+}
+
+.rating-table th:nth-child(3) {
+    width: 100px;
+}
+
+.rating-table th:nth-child(4) {
+    width: 120px;
+}
+
+.rating-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s ease;
+}
+
+.rating-table tbody tr:hover {
+    background: var(--bg-primary);
+}
+
+.rating-table td {
+    padding: 15px 10px;
+}
+
+.rating-table .col-place {
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.rating-table .col-user {
+    text-align: left;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rating-table .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+}
+
+.rating-table .user-name {
+    color: var(--text-primary);
+}
+
+.rating-table .user-badge {
+    background: var(--accent-primary);
+    color: white;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.rating-table .col-streak {
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.rating-table .col-score {
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-size: 18px;
+}
+
+.rating-table .col-user-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rating-empty {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.rating-empty h2 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.rating-empty p {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+.table-icon {
+    width: 2vh;
+    height: 2vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.3vh;
+}

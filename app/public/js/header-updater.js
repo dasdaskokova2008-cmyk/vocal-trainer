@@ -13,13 +13,13 @@ function updateHeaderStats() {
             }
         })
         .catch(err => {
-            console.error('❌ Ошибка обновления шапки:', err);
+            console.error('Ошибка обновления шапки:', err);
             showLoggedOutState();
         });
 }
 
 function showLoggedInState(data) {
-    document.querySelectorAll('#headerScore, #profileScore, #scoreText').forEach(el => {
+    document.querySelectorAll('#headerScore, #profileScore').forEach(el => {
         if (el) el.textContent = data.score;
     });
     

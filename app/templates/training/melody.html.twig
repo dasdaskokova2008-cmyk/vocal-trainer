@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="melody-page">
-    {# 👇 ЗАГОЛОВОК #}
     <div class="learning-header" id="melodyListHeader">
         <h1 class="page-title">
             <img src="{{ asset('images/note-icon.png') }}" alt="Мелодии" style="width: 3.5vh; height: 3.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
@@ -12,12 +11,10 @@
         </h1>
     </div>
 
-    {# ===== СПИСОК МЕЛОДИЙ ===== #}
     <div class="melody-container" id="melodyList">
-        {# ===== ЛЕГКИЕ МЕЛОДИИ ===== #}
         <div class="melody-section">
             <div class="melody-section-header" onclick="toggleMelodySection(this)">
-                <span class="melody-section-title">🎵 Лёгкие мелодии</span>
+                <span class="melody-section-title">Лёгкие мелодии</span>
                 <span class="melody-section-arrow">▼</span>
             </div>
             <div class="melody-section-body">
@@ -34,10 +31,9 @@
             </div>
         </div>
 
-        {# ===== СЛОЖНЫЕ МЕЛОДИИ ===== #}
         <div class="melody-section">
             <div class="melody-section-header" onclick="toggleMelodySection(this)">
-                <span class="melody-section-title">🎵 Сложные мелодии</span>
+                <span class="melody-section-title">Сложные мелодии</span>
                 <span class="melody-section-arrow">▼</span>
             </div>
             <div class="melody-section-body">
@@ -51,23 +47,31 @@
                         {% endif %}
                     </span>
                 </div>
+                <div class="melody-item" onclick="selectMelody('hard', 1)">
+                    <span class="melody-name">Катюша</span>
+                    <span class="melody-progress" id="melodyHard1">
+                        {% if melodyProgress.hard is defined and melodyProgress.hard['Катюша'] is defined %}
+                            {{ melodyProgress.hard['Катюша'] }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
 
-        {# ===== ПОЛЬЗОВАТЕЛЬСКИЕ МЕЛОДИИ ===== #}
         <div class="melody-section">
             <div class="melody-section-header" onclick="toggleMelodySection(this)">
-                <span class="melody-section-title">🎵 Пользовательские мелодии</span>
+                <span class="melody-section-title">Пользовательские мелодии</span>
                 <span class="melody-section-arrow">▼</span>
             </div>
             <div class="melody-section-body">
-                <button class="melody-add-btn" onclick="addUserMelody()">➕ Добавить мелодию</button>
+                <button class="melody-add-btn" onclick="addUserMelody()"> + Добавить мелодию</button>
                 <div id="userMelodiesList"></div>
             </div>
         </div>
     </div>
 
-    {# ===== ИГРОВОЙ ЭКРАН ===== #}
     <div id="melodyGame" class="melody-game">
         <div class="smule-tuner-container" id="melodyTuner">
             <div class="smule-tuner-track" id="melodyTunerTrack">
@@ -111,18 +115,15 @@
             </div>
         </div>
 
-        {# 👇 КНОПКА ЗАПИСИ #}
         <div class="melody-controls">
             <button class="btn-melody" id="melodyRecordBtn" onclick="melodyRecord()">
-                🎤 Записать
+                Записать
             </button>
         </div>
 
-        {# 👇 РЕЗУЛЬТАТ (СКРЫТ ПО УМОЛЧАНИЮ) #}
         <div id="melodyResult" class="result-feedback" style="display: none;"></div>
     </div>
 
-    {# ===== ЭКРАН РЕЗУЛЬТАТА ===== #}
     <div id="melodyResultScreen" class="result-screen" style="display: none;">
         <div class="result-header">
             <h2 class="result-title">Мелодия пройдена!</h2>
@@ -155,7 +156,7 @@
         </div>
         
         <button class="btn-continue" onclick="goBackToMelodyList()">
-            ← Назад к мелодиям
+            Назад к мелодиям
         </button>
     </div>
 </div>

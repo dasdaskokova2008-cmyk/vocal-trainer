@@ -41,6 +41,32 @@ const MELODIES = {
                 'то', 'у', 'же', 'дав', 'но', 'на', 'ку', 'соч', 'ки', ' ',
                 'раз', 'ва', 'ли', 'лась', 'бы', 'на', 'вер', 'но', 'е', 'Зем', 'ля', ' '
             ]
+        },
+        'Катюша': {
+            notes: [
+                'Ми', 'Фа♯', 'Соль', 'Ми', 'Соль', 'Соль', 'Фа♯', 'Ми', 'Фа♯', 'Си1', 
+                'Фа♯', 'Соль', 'Ля', 'Фа♯', 'Ля', 'Ля', 'Соль', 'Фа♯', 'Ми',
+                'Соль', 'Ми2', 'Ре2', 'Ми2', 'Ре2', 'До2', 'До2', 'Си', 'Ля', 'Си', 'Ми', 
+                '-', 'До2', 'Ля', 'Си', 'Соль', 'Фа♯', 'Си1', 'Соль', 'Фа♯', 'Ми',
+                'Соль', 'Ми2', 'Ре2', 'Ми2', 'Ре2', 'До2', 'До2', 'Си', 'Ля', 'Си', 'Ми', 
+                '-', 'До2', 'Ля', 'Си', 'Соль', 'Фа♯', 'Си1', 'Соль', 'Фа♯', 'Ми'
+            ],
+            durations: [
+                1.5, 0.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1,
+                1.5, 0.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2,
+                1, 1, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1,
+                0.5, 1, 0.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2,
+                1, 1, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1,
+                0.5, 1, 0.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2
+            ],
+            lyrics: [
+                'рас', 'цве', 'та', 'ли', 'яб', 'ло', 'ни', 'и', 'гру', 'ши', 
+                'по', 'плы', 'ли', 'ту', 'ма', 'ны', 'над', 'ре', 'кой', 
+                'вы', 'хо', 'ди', '-', 'ла', 'на', 'бе', 'рег', 'ка', 'тю', 'ша',
+                ' ', 'на', 'вы', 'со', 'кий', 'бе', 'рег', 'на', 'кру', 'той', 
+                'вы', 'хо', 'ди', '-', 'ла', 'на', 'бе', 'рег', 'ка', 'тю', 'ша',
+                ' ', 'на', 'вы', 'со', 'кий', 'бе', 'рег', 'на', 'кру', 'той'
+            ]
         }
     },
     user: {}
@@ -725,6 +751,48 @@ function drawMelodyStaff() {
         const noteData = NOTES_RU[actualNoteName];
         if (!noteData) return;
         
+        const lowNotes = ['До', 'Си1', 'Ля1', 'Соль1'];
+        const needsExtraLines = lowNotes.includes(actualNoteName);
+        let extraLinesCount = 0;
+        if (actualNoteName === 'До') extraLinesCount = 0;
+        else if (actualNoteName === 'Си1') extraLinesCount = 0.5;
+        else if (actualNoteName === 'Ля1') extraLinesCount = 1;
+        else if (actualNoteName === 'Соль1') extraLinesCount = 1.5;
+        
+        if (needsExtraLines) {
+            const noteY = staffY + noteData.position * spacing + 2;
+            for (let i = 0; i <= 0; i++) {
+                const extraLine = document.createElement('div');
+                extraLine.className = 'staff-line extra';
+                extraLine.style.cssText = `
+                    position: absolute;
+                    left: ${noteLeft-12}px;
+                    width: 40px;
+                    height: 2px;
+                    background: #888;
+                    top: ${noteY - spacing * (i+extraLinesCount)}px;
+                    z-index: 1;
+                    opacity: 0.6;
+                `;
+                wrapper.appendChild(extraLine);
+            }
+            for (let i = 1; i <= extraLinesCount; i++) {
+                const extraLine = document.createElement('div');
+                extraLine.className = 'staff-line extra';
+                extraLine.style.cssText = `
+                    position: absolute;
+                    left: ${noteLeft-13}px;
+                    width: 40px;
+                    height: 2px;
+                    background: #888;
+                    top: ${noteY - spacing * (i-extraLinesCount)}px;
+                    z-index: 1;
+                    opacity: 0.6;
+                `;
+                wrapper.appendChild(extraLine);
+            }
+        }
+        
         const noteY = staffY + noteData.position * spacing + 2;
         const isCurrent = index === melodyState.currentNoteIndex;
         
@@ -827,6 +895,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         noteEl.appendChild(stem);
         
         const dotPoint = document.createElement('div');
+        dotPoint.className = 'dot-point';
         dotPoint.style.cssText = `
             position: absolute;
             width: 6px;
@@ -843,6 +912,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         
         if (isHard && hasAccidental) {
             const acc = document.createElement('div');
+            acc.className = 'note-accidental'; 
             acc.style.cssText = `
                 position: absolute;
                 font-size: 16px;
@@ -891,6 +961,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         noteEl.appendChild(stem);
         
         const dotPoint = document.createElement('div');
+        dotPoint.className = 'dot-point';
         dotPoint.style.cssText = `
             position: absolute;
             width: 6px;
@@ -907,6 +978,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         
         if (isHard && hasAccidental) {
             const acc = document.createElement('div');
+            acc.className = 'note-accidental'; 
             acc.style.cssText = `
                 position: absolute;
                 font-size: 16px;
@@ -957,6 +1029,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         
         if (isHard && hasAccidental) {
             const acc = document.createElement('div');
+            acc.className = 'note-accidental';  
             acc.style.cssText = `
                 position: absolute;
                 font-size: 16px;
@@ -1006,6 +1079,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
         
         if (isHard && hasAccidental) {
             const acc = document.createElement('div');
+            acc.className = 'note-accidental';
             acc.style.cssText = `
                 position: absolute;
                 font-size: 16px;
@@ -1087,6 +1161,7 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
 
         if (isHard && hasAccidental) {
             const acc = document.createElement('div');
+            acc.className = 'note-accidental';
             acc.style.cssText = `
                 position: absolute;
                 font-size: 16px;
@@ -1167,18 +1242,19 @@ function drawNoteOnStaffFunc(noteEl, duration, noteY, isCurrent, isPause, noteNa
     
     if (isHard && hasAccidental) {
         const acc = document.createElement('div');
-        acc.style.cssText = `
-            position: absolute;
-            font-size: 16px;
-            font-weight: 700;
-            color: ${color};
-            left: -18px;
-            top: ${noteY}px;
-            transform: translateY(-50%);
-            opacity: ${opacity};
-        `;
-        acc.textContent = noteName.includes('♭') ? '♭' : '♯';
-        noteEl.appendChild(acc);
+            acc.className = 'note-accidental';  
+            acc.style.cssText = `
+                position: absolute;
+                font-size: 16px;
+                font-weight: 700;
+                color: ${color};
+                left: -18px;
+                top: ${noteY}px;
+                transform: translateY(-50%);
+                opacity: ${opacity};
+            `;
+            acc.textContent = noteName.includes('♭') ? '♭' : '♯';
+            noteEl.appendChild(acc);
     }
 }
 
@@ -1196,6 +1272,7 @@ function updateCurrentNote() {
             const lyric = el.querySelector('.melody-lyric');
             const flags = el.querySelectorAll('.note-flag');
             const acc = el.querySelector('.note-accidental');
+            const dotPoint = el.querySelector('.dot-point');
             const color = '#4a9eff';
             
             if (dot) {
@@ -1223,6 +1300,10 @@ function updateCurrentNote() {
                 acc.style.color = color;
                 acc.style.opacity = '1';
             }
+            if (dotPoint) {
+                dotPoint.style.background = color;
+                dotPoint.style.opacity = '1';
+            }
             flags.forEach(f => {
                 f.style.background = color;
                 f.style.opacity = '1';
@@ -1233,7 +1314,7 @@ function updateCurrentNote() {
             const lyric = el.querySelector('.melody-lyric');
             const flags = el.querySelectorAll('.note-flag');
             const acc = el.querySelector('.note-accidental');
-            
+            const dotPoint = el.querySelector('.dot-point'); /
             if (isPause) {
                 if (dot) dot.style.opacity = '0';
                 if (stem) stem.style.opacity = '0';
@@ -1245,6 +1326,7 @@ function updateCurrentNote() {
                     lyric.style.opacity = '0';
                 }
                 if (acc) acc.style.opacity = '0';
+                if (dotPoint) dotPoint.style.opacity = '0'; 
                 flags.forEach(f => f.style.opacity = '0');
                 return;
             }
@@ -1275,6 +1357,10 @@ function updateCurrentNote() {
             if (acc) {
                 acc.style.color = color;
                 acc.style.opacity = '1';
+            }
+            if (dotPoint) {
+                dotPoint.style.background = color;
+                dotPoint.style.opacity = '1';
             }
             flags.forEach(f => {
                 f.style.background = color;
@@ -1415,7 +1501,6 @@ function startRecordingLoop() {
     const energy = getAudioEnergy(dataArray);
     const currentNote = melodyState.notes[melodyState.currentNoteIndex];
     const isPause = currentNote === '-';
-    
     if (isPause) {
         const arrow = document.getElementById('melodyVoiceArrow');
         if (arrow) {
@@ -1441,7 +1526,6 @@ function startRecordingLoop() {
         melodyState.animationId = requestAnimationFrame(startRecordingLoop);
         return;
     }
-    
     if (energy > 0.01) {
         const pitch = detectPitch(dataArray, audioContext.sampleRate);
         if (pitch) {
@@ -1541,21 +1625,6 @@ function updateMelodyArrow(freq, target) {
     const clampedTop = Math.max(minPixel, Math.min(maxPixel, pixelPos));
     
     arrow.style.top = clampedTop + 'px';
-    
-    const currentNote = melodyState.notes[melodyState.currentNoteIndex];
-    const isPause = currentNote === '-';
-    
-    if (isPause) {
-        arrow.style.color = '#00c853';
-        arrow.classList.add('hit');
-        const head = arrow.querySelector('.arrow-head');
-        if (head) {
-            head.style.background = 'linear-gradient(135deg, #00E676, #69F0AE)';
-            head.style.boxShadow = '0 0 30px rgba(0, 230, 118, 0.9)';
-        }
-        return;
-    }
-    
     const cents = Math.abs(1200 * Math.log2(freq / target));
     const isInTune = cents < 90;
     
@@ -1662,9 +1731,13 @@ function startSendInterval() {
 }
 
 function showMelodyResultFinal() {
-    const totalDuration = melodyState.durations.reduce((a, b) => a + b, 0);
-    
-    const currentPercent = Math.min(100, Math.round((melodyState.hitTime / 1000 / totalDuration) * 100));
+    let totalNotesDuration = 0;
+    melodyState.durations.forEach((dur, index) => {
+        if (melodyState.notes[index] !== '-') {
+            totalNotesDuration += dur;
+        }
+    });
+    const currentPercent = Math.min(100, Math.round((melodyState.hitTime / 1000 / totalNotesDuration) * 100));
     const totalPoints = melodyState.totalScore || 0;
     
     let bestFromDB = 0;

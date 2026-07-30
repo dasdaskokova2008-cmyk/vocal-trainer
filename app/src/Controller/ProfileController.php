@@ -242,7 +242,7 @@ class ProfileController extends AbstractController
             'avatar' => $avatarName,
             'id' => $randomId,
             'newScore' => $user->getScore(),
-            'message' => '🎉 Новый аватар разблокирован!'
+            'message' => 'Новый аватар разблокирован!'
         ]);
     }
 

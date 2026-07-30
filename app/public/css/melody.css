@@ -574,14 +574,45 @@
 }
 
 
-.progress-container,
-.melody-lyrics,
-.melody-score-display,
-#melodyPlayBtn {
-    display: none !important;
-}
-
 
 .score-summary {
     display: none;
 }
+
+.staff-line.extra {
+    position: absolute;
+    height: 2px;
+    background: #888;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.score-icon {
+    width: 2vh;
+    height: 2vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.4vh;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+}
+
+[data-theme="dark"] .score-icon {
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.5));
+}
+
+#scoreText .score-icon {
+    width: 2vh;
+    height: 2vh;
+}
+
+.profile-score-value .score-icon {
+    width: 2.2vh;
+    height: 2.2vh;
+}
+
+.header-score .score-icon {
+    width: 1.8vh;
+    height: 1.8vh;
+}
+

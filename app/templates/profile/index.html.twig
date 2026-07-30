@@ -121,7 +121,9 @@
 
         <div class="edit-avatar-wrapper">
             <img src="{{ asset('images/avatars/' ~ avatar) }}" alt="Аватар" class="edit-avatar" id="editAvatar">
-            <button class="edit-avatar-btn" onclick="openAvatarEditor()">✏️</button>
+            <button class="edit-avatar-btn" onclick="openAvatarEditor()">
+                <img src="{{ asset('images/edit-icon.png') }}" alt="Редактировать" class="edit-icon">
+            </button>
         </div>
 
         <div class="edit-field">

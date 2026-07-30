@@ -15,9 +15,26 @@ class RatingController extends AbstractController
     {
         $users = $em->getRepository(User::class)->findBy([], ['score' => 'DESC']);
         
+        $usersData = [];
+        foreach ($users as $user) {
+            $unlockedAvatars = $user->getUnlockedAvatars() ?? [];
+            $avatarsCount = count($unlockedAvatars);
+            $calculatedScore = ($avatarsCount - 1) * 1000 + $user->getScore();
+            
+            $usersData[] = [
+                'user' => $user,
+                'calculatedScore' => $calculatedScore,
+                'streak' => $user->getStreak(),
+                'avatarsCount' => $avatarsCount,
+            ];
+        }
+        usort($usersData, function($a, $b) {
+            return $b['calculatedScore'] - $a['calculatedScore'];
+        });
+        
         return $this->render('rating/index.html.twig', [
             'page_title' => 'Рейтинг',
-            'users' => $users,
+            'usersData' => $usersData,
         ]);
     }
 }

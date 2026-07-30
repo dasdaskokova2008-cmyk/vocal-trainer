@@ -46,7 +46,7 @@ function saveTrainingResults(data, url = '/training/pitch/result') {
         }
     })
     .catch(error => {
-        console.error('❌ Ошибка сохранения:', error);
+        console.error('Ошибка сохранения:', error);
     });
 }
 

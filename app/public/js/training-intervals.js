@@ -468,7 +468,11 @@ function updateIntervalProgress() {
     const p = ((intervalGameState.currentTest - 1) / intervalGameState.totalTests) * 100;
     document.getElementById('progressFill').style.width = p + '%';
     document.getElementById('progressText').textContent = `${intervalGameState.currentTest} из ${intervalGameState.totalTests}`;
-    document.getElementById('scoreText').textContent = `⭐ ${intervalGameState.score} баллов`;
+    
+    document.getElementById('scoreText').innerHTML = `
+        <img src="/images/star-icon.png" alt="Баллы" class="score-icon">
+        ${intervalGameState.score} баллов
+    `;
 }
 
 function finishIntervalTest() {
@@ -556,7 +560,7 @@ function openIntervalTheory() {
     
     let html = `
         <div style="margin-bottom: 20px; text-align: center; color: var(--text-secondary); font-size: 14px; letter-spacing: 0.5px;">
-            🎵 Нажми на интервал, чтобы развернуть информацию
+            Нажми на интервал, чтобы развернуть информацию
         </div>
         <div class="theory-accordion">
     `;
@@ -576,7 +580,7 @@ function openIntervalTheory() {
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <button onclick="event.stopPropagation(); playTwoNotes(${freq1 || 440}, ${freq2 || 440})" class="theory-play-btn">
-                            🔊
+                            <img src="/images/speaker-icon.png" alt="Воспроизвести" style="width:18px;height:18px;object-fit:contain;display:block;">
                         </button>
                         <svg class="theory-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>

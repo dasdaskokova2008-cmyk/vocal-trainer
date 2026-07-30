@@ -22,7 +22,7 @@ async function startMicrophone() {
         isRecording = true;
         return true;
     } catch (err) {
-        alert('❌ Не удалось получить доступ к микрофону: ' + err.message);
+        alert('Не удалось получить доступ к микрофону: ' + err.message);
         return false;
     }
 }
@@ -105,7 +105,7 @@ async function startVoiceRecording() {
         micBtn.disabled = true;
         micBtn.classList.add('locked');
         const status = document.getElementById('micStatus');
-        if (status) status.textContent = '⏳ Запись...';
+        if (status) status.textContent = 'Запись...';
     }
 }
 

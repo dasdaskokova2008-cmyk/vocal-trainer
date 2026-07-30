@@ -38,12 +38,12 @@ class ResetStreakCommand extends Command
             if ($lastActivity && $lastActivity < $yesterday) {
                 $user->setStreak(0);
                 $resetCount++;
-                $output->writeln("🔥 Сброшен стрик для: " . $user->getUsername());
+                $output->writeln("Сброшен стрик для: " . $user->getUsername());
             }
         }
         
         $this->em->flush();
-        $output->writeln("✅ Сброшено стриков: $resetCount");
+        $output->writeln("Сброшено стриков: $resetCount");
         
         return Command::SUCCESS;
     }

@@ -98,23 +98,6 @@
 
 .difficulty-cards-grid .card-wrapper:hover {transform: translateY(-12px);}
 
-@media (max-width: 1100px) {
-    .difficulty-cards-grid {
-        flex-direction: column;
-        gap: 3vh;
-    }
-}
-
-@media (max-width: 600px) {
-    .difficulty-cards-grid .card-wrapper {
-        width: 32vh;
-        height: 32vh;
-        max-width: 32vh;
-        max-height: 32vh;
-        min-width: 22vh;
-        min-height: 22vh;
-    }
-}
 
 .card-wrapper {
     display: flex;

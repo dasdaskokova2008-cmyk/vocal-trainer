@@ -196,18 +196,3 @@
     transform: translateY(2px); 
 }
 
-
-
-@media (max-width: 600px) {
-    .piano .key.white {
-        font-size: 8px;
-        padding-bottom: 4px;
-    }
-    .piano-hint {
-        font-size: 12px;
-    }
-    .hearing-hint {
-        font-size: 14px;
-    }
-}
-
