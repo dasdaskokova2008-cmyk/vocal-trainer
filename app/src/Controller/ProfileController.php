@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class ProfileController extends AbstractController
 {
@@ -55,7 +57,7 @@ class ProfileController extends AbstractController
         $data = json_decode($request->getContent(), true);
         
         $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
-        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('', $csrfToken))) {
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('pitch_result', $csrfToken))) {
             return $this->json(['success' => false, 'error' => 'Неверный CSRF токен'], 403);
         }
 
@@ -308,6 +310,7 @@ class ProfileController extends AbstractController
             'current' => $user->getAvatar(),
         ]);
     }
+    
     #[Route('/profile/skip-intro', name: 'profile_skip_intro', methods: ['POST'])]
     public function skipIntro(EntityManagerInterface $em): JsonResponse
     {
