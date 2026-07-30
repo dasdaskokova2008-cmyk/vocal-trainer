@@ -9,30 +9,30 @@
 
 {% block content %}
 <div class="warmup-page" id="warmupApp">
-    <div id="warmupIntro" class="warmup-intro" style="display: {% if skipIntro %}none{% else %}block{% endif %};">
+    <div id="warmupIntro" class="warmup-intro {% if skipIntro %}hidden{% endif %}">
         <div class="warmup-text">
             <h2>Почему важна распевка?</h2>
             <p>
-            Распевка — это не просто традиция, а важный этап подготовки голоса. 
-            Она разогревает связки, улучшает гибкость голоса и помогает избежать 
-            перенапряжения. Даже профессионалы не пропускают этот шаг!
-        </p>
-        <p>
-            Всего 2 минуты — и ваш голос будет звучать увереннее, шире и ярче.
-        </p>
-        <div class="warmup-timer" id="introTimer">10</div>
+                Распевка — это не просто традиция, а важный этап подготовки голоса. 
+                Она разогревает связки, улучшает гибкость голоса и помогает избежать 
+                перенапряжения. Даже профессионалы не пропускают этот шаг!
+            </p>
+            <p>
+                Всего 2 минуты — и ваш голос будет звучать увереннее, шире и ярче.
+            </p>
+            <div class="warmup-timer" id="introTimer">10</div>
             <button class="btn-skip-intro" onclick="skipIntroForever()">
-                <img src="{{ asset('images/close-icon.png') }}" alt="Закрыть" class="btn-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                <img src="{{ asset('images/close-icon.png') }}" alt="Закрыть" class="btn-icon">
                 Больше не показывать
             </button>
         </div>
     </div>
 
-    <div id="warmupCountdown" class="warmup-countdown" style="display: none;">
+    <div id="warmupCountdown" class="warmup-countdown hidden">
         <div class="countdown-number" id="countdownNumber">3</div>
     </div>
 
-    <div id="warmupVideo" class="warmup-video" style="display: none;">
+    <div id="warmupVideo" class="warmup-video hidden">
         <div class="video-wrapper">
             <div class="video-progress">
                 <div class="video-progress-bar" id="progressBar"></div>
@@ -55,16 +55,16 @@
             </div>
         </div>
 
-        <div id="warmupResult" class="warmup-result" style="display: none;">
+        <div id="warmupResult" class="warmup-result hidden">
             <div class="praise-message">
                 <h2>
-                    <img src="{{ asset('images/fire-icon.png') }}" alt="Отлично" class="result-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                    <img src="{{ asset('images/fire-icon.png') }}" alt="Отлично" class="result-icon">
                     Отличная разминка! Ты готов к вокалу!
                 </h2>
                 <p>+10 очков за распевку!</p>
             </div>
             <div class="result-buttons">
-                <button id="continueBtn" class="btn-continue" onclick="continueToTraining()" style="display: block !important;">
+                <button id="continueBtn" class="btn-continue btn-continue--visible" onclick="continueToTraining()">
                     Продолжить →
                 </button>
             </div>

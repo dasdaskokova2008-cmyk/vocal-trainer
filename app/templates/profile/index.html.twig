@@ -16,7 +16,7 @@
 
         <div class="profile-email-section">
             <span class="profile-email-label">
-                <img src="{{ asset('images/google-icon.svg') }}" alt="Google" style="width: 2vh; height: 2vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.5vh;">
+                <img src="{{ asset('images/google-icon.svg') }}" alt="Google" class="profile-icon-xs">
                 Gmail:
             </span>
             <div class="profile-email-value">
@@ -36,12 +36,12 @@
 
         <div class="profile-score-section">
             <div class="profile-score-item">
-                <img src="{{ asset('images/fire-icon.png') }}" alt="Серия" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                <img src="{{ asset('images/fire-icon.png') }}" alt="Серия" class="profile-icon-label">
                 <span class="profile-score-label">Серия:</span>
                 <span class="profile-score-value" id="profileStreak">{{ app.user.streak ?? 0 }}</span>
             </div>
             <div class="profile-score-item">
-                <img src="{{ asset('images/target-icon.png') }}" alt="Очки" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                <img src="{{ asset('images/target-icon.png') }}" alt="Очки" class="profile-icon-label">
                 <span class="profile-score-label">Очки:</span>
                 <span class="profile-score-value" id="profileScore">{{ app.user.score ?? 0 }}</span>
             </div>
@@ -50,18 +50,18 @@
         <div class="profile-stats-section">
             <div class="profile-stats-tabs">
                 <button class="stats-tab active" data-mode="light" onclick="switchStatsMode('light')">
-                    <img src="{{ asset('images/easy-icon.png') }}" alt="Лёгкая" style="width: 2vh; height: 2vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.5vh;">
+                    <img src="{{ asset('images/easy-icon.png') }}" alt="Лёгкая" class="profile-icon-xs">
                     Лёгкая
                 </button>
                 <button class="stats-tab" data-mode="hard" onclick="switchStatsMode('hard')">
-                    <img src="{{ asset('images/hard-icon.png') }}" alt="Сложная" style="width: 2vh; height: 2vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.5vh;">
+                    <img src="{{ asset('images/hard-icon.png') }}" alt="Сложная" class="profile-icon-xs">
                     Сложная
                 </button>
             </div>
             <div class="profile-stats-grid">
                 <div class="profile-stat-card">
                     <div class="stat-title">
-                        <img src="{{ asset('images/voice-icon.png') }}" alt="Вокал" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.5vh;">
+                        <img src="{{ asset('images/voice-icon.png') }}" alt="Вокал" class="profile-icon-label">
                         Вокал
                     </div>
                     <div class="stat-circle" id="voiceStat">
@@ -80,7 +80,7 @@
                 </div>
                 <div class="profile-stat-card">
                     <div class="stat-title">
-                        <img src="{{ asset('images/ear-icon.png') }}" alt="Слух" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.5vh;">
+                        <img src="{{ asset('images/ear-icon.png') }}" alt="Слух" class="profile-icon-label">
                         Слух
                     </div>
                     <div class="stat-circle" id="hearingStat">
@@ -96,16 +96,16 @@
 
         <div class="profile-actions-wrapper">
             <button class="btn-edit-profile" onclick="openEditProfile()">
-                <img src="{{ asset('images/edit-icon.png') }}" alt="Изменить" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+                <img src="{{ asset('images/edit-icon.png') }}" alt="Изменить" class="profile-icon-btn">
                 Изменить профиль
             </button>
             <div class="profile-actions-row">
                 <button onclick="confirmLogout()" class="btn-profile-action btn-logout">
-                    <img src="{{ asset('images/logout-icon.png') }}" alt="Выйти" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+                    <img src="{{ asset('images/logout-icon.png') }}" alt="Выйти" class="profile-icon-btn">
                     Выйти
                 </button>
                 <button onclick="confirmDelete()" class="btn-profile-action btn-delete">
-                    <img src="{{ asset('images/delete-icon.png') }}" alt="Удалить" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+                    <img src="{{ asset('images/delete-icon.png') }}" alt="Удалить" class="profile-icon-btn">
                     Удалить аккаунт
                 </button>
             </div>
@@ -115,7 +115,7 @@
 
 <div id="editProfileModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeEditProfile()"></div>
-    <div class="modal-content" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+    <div class="modal-content profile-modal-lg">
         <button class="modal-close" onclick="closeEditProfile()">✕</button>
         <h2 class="modal-title">Редактировать профиль</h2>
 
@@ -155,7 +155,7 @@
 
 <div id="avatarEditorModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeAvatarEditor()"></div>
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content profile-modal-md">
         <button class="modal-close" onclick="closeAvatarEditor()">✕</button>
         <h2 class="modal-title">Выбор аватара</h2>
 
@@ -163,13 +163,13 @@
         </div>
 
         <button onclick="unlockRandomAvatar()" class="btn-unlock-avatar">
-            <img src="{{ asset('images/unlock-icon.png') }}" alt="Открыть" style="width: 2vh; height: 2vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+            <img src="{{ asset('images/unlock-icon.png') }}" alt="Открыть" class="profile-icon-xs">
             Открыть новый аватар за 1000 очков
         </button>
         <div id="avatarUnlockStatus" class="input-status"></div>
 
-        <button onclick="saveAvatar()" class="modal-btn-primary" style="margin-top: 12px;">
-            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+        <button onclick="saveAvatar()" class="modal-btn-primary profile-mt-3">
+            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" class="profile-icon-btn">
             Сохранить аватар
         </button>
     </div>
@@ -177,7 +177,7 @@
 
 <div id="usernameEditorModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeUsernameEditor()"></div>
-    <div class="modal-content" style="max-width: 420px;">
+    <div class="modal-content profile-modal-sm">
         <button class="modal-close" onclick="closeUsernameEditor()">✕</button>
         <h2 class="modal-title">Сменить логин</h2>
 
@@ -188,7 +188,7 @@
         </div>
 
         <button onclick="saveUsername()" class="modal-btn-primary">
-            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" class="profile-icon-btn">
             Сохранить
         </button>
     </div>
@@ -196,9 +196,9 @@
 
 <div id="passwordEditorModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closePasswordEditor()"></div>
-    <div class="modal-content" style="max-width: 420px;">
+    <div class="modal-content profile-modal-sm">
         <button class="modal-close" onclick="closePasswordEditor()">✕</button>
-        <h2 class="modal-title"> Сменить пароль</h2>
+        <h2 class="modal-title">Сменить пароль</h2>
 
         <div class="modal-input-group">
             <label>Старый пароль</label>
@@ -215,7 +215,7 @@
         </div>
 
         <button onclick="savePassword()" class="modal-btn-primary">
-            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+            <img src="{{ asset('images/save-icon.png') }}" alt="Сохранить" class="profile-icon-btn">
             Сохранить
         </button>
     </div>
@@ -223,26 +223,26 @@
 
 <div id="confirmDeleteModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeConfirmDelete()"></div>
-    <div class="modal-content" style="max-width: 420px; text-align: center;">
+    <div class="modal-content profile-modal-sm">
         <button class="modal-close" onclick="closeConfirmDelete()">✕</button>
-        <h2 style="color: var(--text-primary); font-size: 24px; margin-bottom: 16px;"> Удалить аккаунт?</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 24px;">Все данные будут безвозвратно удалены. Вы уверены?</p>
-        <div style="display: flex; gap: 12px; justify-content: center;">
-            <button onclick="closeConfirmDelete()" class="modal-btn-primary" style="background: var(--bg-primary); color: var(--text-primary); flex: 1;">Отмена</button>
-            <button onclick="deleteAccount()" class="modal-btn-primary" style="background: #ff1744; flex: 1;">Удалить</button>
+        <h2 class="profile-confirm-title">Удалить аккаунт?</h2>
+        <p class="profile-confirm-desc">Все данные будут безвозвратно удалены. Вы уверены?</p>
+        <div class="profile-confirm-actions">
+            <button onclick="closeConfirmDelete()" class="modal-btn-primary profile-btn-cancel">Отмена</button>
+            <button onclick="deleteAccount()" class="modal-btn-primary profile-btn-delete">Удалить</button>
         </div>
     </div>
 </div>
 
 <div id="confirmLogoutModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeConfirmLogout()"></div>
-    <div class="modal-content" style="max-width: 420px; text-align: center;">
+    <div class="modal-content profile-modal-sm">
         <button class="modal-close" onclick="closeConfirmLogout()">✕</button>
-        <h2 style="color: var(--text-primary); font-size: 24px; margin-bottom: 16px;"> Выйти из аккаунта?</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 24px;">Вы уверены, что хотите выйти?</p>
-        <div style="display: flex; gap: 12px; justify-content: center;">
-            <button onclick="closeConfirmLogout()" class="modal-btn-primary" style="background: var(--bg-primary); color: var(--text-primary); flex: 1;">Остаться</button>
-            <button onclick="logoutUser()" class="modal-btn-primary" style="flex: 1;">Выйти</button>
+        <h2 class="profile-confirm-title">Выйти из аккаунта?</h2>
+        <p class="profile-confirm-desc">Вы уверены, что хотите выйти?</p>
+        <div class="profile-confirm-actions">
+            <button onclick="closeConfirmLogout()" class="modal-btn-primary profile-btn-cancel">Остаться</button>
+            <button onclick="logoutUser()" class="modal-btn-primary profile-btn-logout">Выйти</button>
         </div>
     </div>
 </div>

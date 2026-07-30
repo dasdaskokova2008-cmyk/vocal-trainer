@@ -1,0 +1,244 @@
+.stat-icon-sm {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+}
+
+.eye-icon-sm {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+}
+
+.streak-icon.inactive {
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.hidden {
+    display: none;
+}
+
+.btn-icon,
+.result-icon {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.btn-continue--visible {
+    display: block;
+}
+
+.page-icon {
+    width: 3vh;
+    height: 3vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.register-eye-icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: block;
+}
+
+.profile-icon-xs {
+    width: 2vh;
+    height: 2vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5vh;
+}
+
+.profile-icon-label {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5vh;
+}
+
+.profile-icon-btn {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.8vh;
+}
+
+.profile-modal-lg {
+    max-width: 700px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.profile-modal-md {
+    max-width: 600px;
+}
+
+.profile-modal-sm {
+    max-width: 420px;
+}
+
+.profile-mt-3 {
+    margin-top: 12px;
+}
+
+.profile-confirm-title {
+    color: var(--text-primary);
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.profile-confirm-desc {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.profile-confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.profile-btn-cancel {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.profile-btn-delete {
+    background: #ff1744;
+    flex: 1;
+}
+
+.profile-btn-logout {
+    flex: 1;
+}
+
+.rating-trophy-icon {
+    width: 3.5vh;
+    height: 3.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1vh;
+}
+
+.voice-score-icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.melody-note-icon {
+    width: 3.5vh;
+    height: 3.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1vh;
+}
+
+.hearing-star-icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.hearing-speaker-icon {
+    width: 4vh;
+    height: 4vh;
+    object-fit: contain;
+}
+
+.hearing-trophy-icon {
+    width: 4vh;
+    height: 4vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1vh;
+}
+
+.intervals-theory-wrapper {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-theory {
+    padding: 1.2vh 4vh;
+    font-size: clamp(16px, 2vh, 24px);
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #6c5ce7, #4a9eff);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+}
+
+.btn-theory:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 158, 255, 0.5);
+}
+
+.intervals-btn-icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.8vh;
+}
+
+.intervals-star-icon {
+    width: 2.5vh;
+    height: 2.5vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.intervals-speaker-icon {
+    width: 4vh;
+    height: 4vh;
+    object-fit: contain;
+}
+
+.intervals-trophy-icon {
+    width: 4vh;
+    height: 4vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1vh;
+}
+
+.intervals-modal-lg {
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.intervals-title-icon {
+    width: 4vh;
+    height: 4vh;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1vh;
+}

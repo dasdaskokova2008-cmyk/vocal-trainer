@@ -59,7 +59,7 @@
             </div>
             <span class="progress-text" id="progressText">0 из 10</span>
             <span class="score-text" id="scoreText">
-                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" class="hearing-star-icon">
                 0 баллов
             </span>
         </div>
@@ -104,7 +104,7 @@
             </div>
 
             <button class="btn-play-note" id="playNoteBtn" onclick="playCurrentHearingNote()">
-                <img src="{{ asset('images/speaker-icon.png') }}" alt="Воспроизвести" style="width: 4vh; height: 4vh; object-fit: contain;">
+                <img src="{{ asset('images/speaker-icon.png') }}" alt="Воспроизвести" class="hearing-speaker-icon">
             </button>
 
             <div class="piano-container" id="pianoContainer">
@@ -119,7 +119,7 @@
     <div id="resultScreen" class="result-screen" style="display: none;">
         <div class="result-header">
             <h2 class="result-title">
-                <img src="{{ asset('images/trophy-icon.png') }}" alt="Завершено" style="width: 4vh; height: 4vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+                <img src="{{ asset('images/trophy-icon.png') }}" alt="Завершено" class="hearing-trophy-icon">
                 Тренировка завершена!
             </h2>
         </div>

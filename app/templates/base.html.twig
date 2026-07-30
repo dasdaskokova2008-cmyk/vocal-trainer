@@ -30,10 +30,14 @@
                         {% if app.user %}
                             <span class="username">{{ app.user.username }}</span>
                             <a href="{{ path('profile') }}" class="user-avatar-link">
-                                <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" alt="Профиль" class="user-avatar">
+
+                                <img src="{{ asset('images/avatars/' ~ (app.user.avatar ?? 'avatar_1.png')) }}" 
+                                     alt="Профиль" 
+                                     class="user-avatar"
+                                     loading="lazy">
                             </a>
                         {% else %}
-                            <a href="#" class="login-btn" onclick="openAuth()">Войти</a>
+                            <a href="#" class="login-btn" onclick="openAuth(); return false;">Войти</a>
                         {% endif %}
                     </div>
                 </div>
@@ -49,11 +53,15 @@
                     {% if app.user %}
                         <div class="user-stats">
                             <div class="stat-item">
-                                <img src="{{ asset('images/fire-icon.png') }}" alt="Серия" class="stat-icon streak-icon {% if app.user.lastActivityDate and app.user.lastActivityDate|date('Y-m-d') == 'now'|date('Y-m-d') %}active{% endif %}" style="width: 3vh; height: 3vh; object-fit: contain;">
+                                <img src="{{ asset('images/fire-icon.png') }}" 
+                                     alt="Серия" 
+                                     class="stat-icon streak-icon stat-icon-sm {% if app.user.lastActivityDate and app.user.lastActivityDate|date('Y-m-d') == 'now'|date('Y-m-d') %}active{% else %}inactive{% endif %}">
                                 <span class="stat-value" id="headerStreak">{{ app.user.streak ?? 0 }}</span>
                             </div>
                             <div class="stat-item">
-                                <img src="{{ asset('images/target-icon.png') }}" alt="Очки" class="stat-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                                <img src="{{ asset('images/target-icon.png') }}" 
+                                     alt="Очки" 
+                                     class="stat-icon stat-icon-sm">
                                 <span class="stat-value" id="headerScore">{{ app.user.score ?? 0 }}</span>
                             </div>
                         </div>
@@ -108,7 +116,6 @@
             </div>
 
             <form id="loginForm" class="modal-form" method="post" action="{{ path('login') }}">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <div class="modal-input-group">
                     <label>Email или логин</label>
                     <input type="text" id="login_username" name="username" placeholder="Введите email или логин" required>
@@ -118,7 +125,7 @@
                     <div class="password-wrapper">
                         <input type="password" id="login_password" name="password" placeholder="Введите пароль" required class="password-input">
                         <button type="button" onclick="togglePassword('login_password', this)" class="password-toggle">
-                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon eye-icon-sm">
                         </button>
                     </div>
                 </div>
@@ -129,20 +136,6 @@
                 </div>
                 <button type="submit" class="modal-btn-primary">Войти</button>
             </form>
-
-            <div id="loginSuccessModal" class="modal" style="display: none;">
-                <div class="modal-overlay" onclick="closeLoginSuccess()"></div>
-                <div class="modal-content login-success-content">
-                    <div class="login-success-icon">
-                        <img src="{{ asset('images/welcome-icon.png') }}" alt="Успех">
-                    </div>
-                    <h2 class="login-success-title">Вы успешно вошли!</h2>
-                    <p class="login-success-subtitle">Хороших занятий!</p>
-                    <button onclick="closeLoginSuccess()" class="modal-btn-primary login-success-btn">
-                        Продолжить
-                    </button>
-                </div>
-            </div>
 
             <form id="registerForm" class="modal-form" style="display: none;" method="post" action="{{ path('register') }}">
                 <div class="modal-input-group">
@@ -156,7 +149,7 @@
                     <div class="password-wrapper">
                         <input type="password" id="register_password" name="password" placeholder="Придумайте пароль" required class="password-input">
                         <button type="button" onclick="togglePassword('register_password', this)" class="password-toggle">
-                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon eye-icon-sm">
                         </button>
                     </div>
                     <div id="passwordStatus" class="input-status"></div>
@@ -166,7 +159,7 @@
                     <div class="password-wrapper">
                         <input type="password" id="register_password_repeat" name="password_repeat" placeholder="Повторите пароль" required class="password-input">
                         <button type="button" onclick="togglePassword('register_password_repeat', this)" class="password-toggle">
-                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon" style="width: 3vh; height: 3vh; object-fit: contain;">
+                            <img src="{{ asset('images/eye-icon.png') }}" alt="Показать пароль" class="eye-icon eye-icon-sm">
                         </button>
                     </div>
                     <div id="passwordRepeatStatus" class="input-status"></div>
@@ -205,11 +198,25 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/auth-forms.js') }}"></script>
-    <script src="{{ asset('js/theme.js') }}"></script>
-    <script src="{{ asset('js/modal-helpers.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('js/header-updater.js') }}"></script>
+    <div id="loginSuccessModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeLoginSuccess()"></div>
+        <div class="modal-content login-success-content">
+            <div class="login-success-icon">
+                <img src="{{ asset('images/welcome-icon.png') }}" alt="Успех">
+            </div>
+            <h2 class="login-success-title">Вы успешно вошли!</h2>
+            <p class="login-success-subtitle">Хороших занятий!</p>
+            <button onclick="closeLoginSuccess()" class="modal-btn-primary login-success-btn">
+                Продолжить
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/auth-forms.js') }}" defer></script>
+    <script src="{{ asset('js/modal-helpers.js') }}" defer></script>
+    <script src="{{ asset('js/theme.js') }}" defer></script>
+    <script src="{{ asset('js/main.js') }}" defer></script>
+    <script src="{{ asset('js/header-updater.js') }}" defer></script>
     {% block javascripts %}{% endblock %}
 </body>
 </html>

@@ -10,7 +10,7 @@
 {% block content %}
     <div class="learning-header">
         <h1 class="page-title">
-            <img src="{{ asset('images/trophy-icon.png') }}" alt="Рейтинг" style="width: 3.5vh; height: 3.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+            <img src="{{ asset('images/trophy-icon.png') }}" alt="Рейтинг" class="rating-trophy-icon">
             Рейтинг
         </h1>
     </div>
@@ -48,7 +48,8 @@
                                     <div class="col-user-wrap">
                                         <img src="{{ asset('images/avatars/' ~ user.avatar) }}" 
                                             alt="Аватар" 
-                                            class="user-avatar">
+                                            class="user-avatar"
+                                            loading="lazy">
                                         <span class="user-name">{{ user.username }}</span>
                                         {% if app.user and app.user.id == user.id %}
                                             <span class="user-badge">Вы</span>

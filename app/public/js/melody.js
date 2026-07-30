@@ -497,24 +497,32 @@ function loadMelodyProgress() {
 }
 
 function updateMelodyUI() {
-    
     if (melodyState.melodyProgress) {
         if (melodyState.melodyProgress.light) {
-            const lightKeys = Object.keys(melodyState.melodyProgress.light);
-            lightKeys.forEach((key, index) => {
-                const progress = melodyState.melodyProgress.light[key];
-                const el = document.getElementById(`melodyLight${index}`);
-                if (el) el.textContent = progress + '%';
-            });
+            const map = {
+                'Баю-баюшки': 'melodyLight0'
+            };
+            for (const [key, progress] of Object.entries(melodyState.melodyProgress.light)) {
+                const elId = map[key];
+                if (elId) {
+                    const el = document.getElementById(elId);
+                    if (el) el.textContent = progress + '%';
+                }
+            }
         }
         
         if (melodyState.melodyProgress.hard) {
-            const hardKeys = Object.keys(melodyState.melodyProgress.hard);
-            hardKeys.forEach((key, index) => {
-                const progress = melodyState.melodyProgress.hard[key];
-                const el = document.getElementById(`melodyHard${index}`);
-                if (el) el.textContent = progress + '%';
-            });
+            const map = {
+                'Ты да я, да мы с тобой': 'melodyHard0',
+                'Катюша': 'melodyHard1'
+            };
+            for (const [key, progress] of Object.entries(melodyState.melodyProgress.hard)) {
+                const elId = map[key];
+                if (elId) {
+                    const el = document.getElementById(elId);
+                    if (el) el.textContent = progress + '%';
+                }
+            }
         }
     }
 }
@@ -1517,11 +1525,6 @@ function startRecordingLoop() {
             melodyState.isHit = true;
             melodyState.lastHitTime = Date.now();
         }
-        melodyState.successfulHits++;
-        melodyState.segmentHits++;
-        melodyState.totalHitTime += 0.1;
-        melodyState.totalAttempts++;
-        melodyState.segmentAttempts++;
         
         melodyState.animationId = requestAnimationFrame(startRecordingLoop);
         return;
@@ -1655,11 +1658,6 @@ function checkMelodyHit(detectedFreq, targetFreq) {
             melodyState.isHit = true;
             melodyState.lastHitTime = Date.now();
         }
-        melodyState.successfulHits++;
-        melodyState.segmentHits++;
-        melodyState.totalHitTime += 0.1;
-        melodyState.totalAttempts++;
-        melodyState.segmentAttempts++;
         return;
     }
     
@@ -1741,16 +1739,21 @@ function showMelodyResultFinal() {
     const totalPoints = melodyState.totalScore || 0;
     
     let bestFromDB = 0;
-    if (melodyState.melodyProgress && melodyState.melodyProgress.light) {
-        bestFromDB = melodyState.melodyProgress.light[melodyState.currentMelodyKey] || 0;
+    const type = melodyState.currentMelodyType;
+    const key = melodyState.currentMelodyKey;
+    
+    if (type === 'light' && melodyState.melodyProgress?.light) {
+        bestFromDB = melodyState.melodyProgress.light[key] || 0;
+    } else if (type === 'hard' && melodyState.melodyProgress?.hard) {
+        bestFromDB = melodyState.melodyProgress.hard[key] || 0;
     }
     
     const displayPercent = currentPercent;
     
     let pointsToAdd = 0;
-    if (melodyState.currentMelodyType === 'light') {
+    if (type === 'light') {
         pointsToAdd = Math.ceil(currentPercent / 2);
-    } else if (melodyState.currentMelodyType === 'hard') {
+    } else if (type === 'hard') {
         pointsToAdd = currentPercent * 2;
     } else {
         pointsToAdd = currentPercent;
@@ -1818,41 +1821,58 @@ function showMelodyResultFinal() {
 }
 
 function saveMelodyResult(percent, pointsToAdd) {
+    const type = melodyState.currentMelodyType;
+    const key = melodyState.currentMelodyKey;
+    
     let currentProgress = 0;
-    if (melodyState.melodyProgress && melodyState.melodyProgress.light) {
-        currentProgress = melodyState.melodyProgress.light[melodyState.currentMelodyKey] || 0;
+    if (type === 'light' && melodyState.melodyProgress?.light) {
+        currentProgress = melodyState.melodyProgress.light[key] || 0;
+    } else if (type === 'hard' && melodyState.melodyProgress?.hard) {
+        currentProgress = melodyState.melodyProgress.hard[key] || 0;
     }
+    
     const bestPercent = Math.max(currentProgress, percent);
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'); 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
     const data = {
-        type: melodyState.currentMelodyType,
-        melodyKey: melodyState.currentMelodyKey,
+        type: type,
+        melodyKey: key,
         percentage: bestPercent,
         score: pointsToAdd,
-        _csrf_token: csrfToken  
+        _csrf_token: csrfToken
     };
+    
     fetch('/api/melody/result', {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',
-            'X-CSRF-Token': csrfToken  
+            'X-CSRF-Token': csrfToken
         },
         body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            if (!melodyState.melodyProgress.light) {
-                melodyState.melodyProgress.light = {};
+            if (type === 'light') {
+                if (!melodyState.melodyProgress.light) melodyState.melodyProgress.light = {};
+                melodyState.melodyProgress.light[key] = bestPercent;
+            } else if (type === 'hard') {
+                if (!melodyState.melodyProgress.hard) melodyState.melodyProgress.hard = {};
+                melodyState.melodyProgress.hard[key] = bestPercent;
             }
-            melodyState.melodyProgress.light[melodyState.currentMelodyKey] = bestPercent;
-            const el = document.getElementById('melodyLight0');
-            if (el) {
-                el.textContent = bestPercent + '%';
+            
+            const map = type === 'light' 
+                ? { 'Баю-баюшки': 'melodyLight0' }
+                : { 'Ты да я, да мы с тобой': 'melodyHard0', 'Катюша': 'melodyHard1' };
+            
+            const elId = map[key];
+            if (elId) {
+                const el = document.getElementById(elId);
+                if (el) el.textContent = bestPercent + '%';
             }
+            
             if (result.newTotalScore !== undefined) {
-                const scoreElements = document.querySelectorAll('#headerScore, #profileScore');
-                scoreElements.forEach(el => {
+                document.querySelectorAll('#headerScore, #profileScore').forEach(el => {
                     if (el) el.textContent = result.newTotalScore;
                 });
             }
@@ -1861,6 +1881,28 @@ function saveMelodyResult(percent, pointsToAdd) {
     .catch(err => console.error('Ошибка сохранения:', err));
 }
 
+function updateMelodyProgressUI(type, key, percent) {
+    const lightMap = {
+        'Баю-баюшки': 'melodyLight0'
+    };
+    
+    const hardMap = {
+        'Ты да я, да мы с тобой': 'melodyHard0',
+        'Катюша': 'melodyHard1'
+    };
+    
+    let elementId = null;
+    if (type === 'light') {
+        elementId = lightMap[key];
+    } else if (type === 'hard') {
+        elementId = hardMap[key];
+    }
+    
+    if (elementId) {
+        const el = document.getElementById(elementId);
+        if (el) el.textContent = percent + '%';
+    }
+}
 function showMelodyFeedback(message, type) {
     const container = document.getElementById('melodyResult');
     if (!container) return;

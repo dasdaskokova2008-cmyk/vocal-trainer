@@ -156,7 +156,6 @@ function saveUsername() {
     status.innerHTML = 'Проверка...';
     status.className = 'input-status loading';
 
-    // 1. Проверяем занятость
     fetch('/check-username?username=' + encodeURIComponent(username))
         .then(response => response.json())
         .then(data => {
@@ -166,7 +165,6 @@ function saveUsername() {
                 return;
             }
             
-            // 2. Если свободен, сохраняем
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             
             fetch('/profile/update', {

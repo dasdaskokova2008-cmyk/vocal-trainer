@@ -430,7 +430,7 @@ class TrainingController extends AbstractController
         $data = json_decode($request->getContent(), true);
         
         $csrfToken = $data['_csrf_token'] ?? $request->headers->get('X-CSRF-Token');
-        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('melody_result', $csrfToken))) {
+        if (!$csrfToken || !$csrfTokenManager->isTokenValid(new CsrfToken('pitch_result', $csrfToken))) {
             return $this->json(['error' => 'Неверный CSRF токен'], 403);
         }
 

@@ -379,7 +379,7 @@ function updateHearingProgress() {
     document.getElementById('progressText').textContent = `${hearingGameState.currentTest} из ${hearingGameState.totalTests}`;
     
     document.getElementById('scoreText').innerHTML = `
-        <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+        <img src="/images/star-icon.png"  alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
         ${hearingGameState.score} баллов
     `;
 }

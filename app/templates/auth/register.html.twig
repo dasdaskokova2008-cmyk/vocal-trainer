@@ -45,8 +45,8 @@
                     <label>Пароль</label>
                     <div class="password-wrapper">
                         <input type="password" id="google_password" name="password" placeholder="Придумайте пароль">
-                        <button type="button" onclick="togglePassword('google_password', this)" class="toggle-password-btn">
-                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        <button type="button" onclick="togglePassword('google_password', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" class="register-eye-icon">
                         </button>
                     </div>
                     <div id="googlePasswordStatus" class="input-status"></div>
@@ -56,8 +56,8 @@
                     <label>Повторите пароль</label>
                     <div class="password-wrapper">
                         <input type="password" id="google_password_repeat" name="password_repeat" placeholder="Повторите пароль">
-                        <button type="button" onclick="togglePassword('google_password_repeat', this)" class="toggle-password-btn">
-                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        <button type="button" onclick="togglePassword('google_password_repeat', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" class="register-eye-icon">
                         </button>
                     </div>
                     <div id="googlePasswordRepeatStatus" class="input-status"></div>
@@ -86,8 +86,8 @@
                     <label>Пароль <span class="required-star">*</span></label>
                     <div class="password-wrapper">
                         <input type="password" id="register_password" name="password" placeholder="Придумайте пароль" required>
-                        <button type="button" onclick="togglePassword('register_password', this)" class="toggle-password-btn">
-                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        <button type="button" onclick="togglePassword('register_password', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" class="register-eye-icon">
                         </button>
                     </div>
                     <div id="passwordStatus" class="input-status"></div>
@@ -97,8 +97,8 @@
                     <label>Повторите пароль <span class="required-star">*</span></label>
                     <div class="password-wrapper">
                         <input type="password" id="register_password_repeat" name="password_repeat" placeholder="Повторите пароль" required>
-                        <button type="button" onclick="togglePassword('register_password_repeat', this)" class="toggle-password-btn">
-                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: block;">
+                        <button type="button" onclick="togglePassword('register_password_repeat', this)" class="password-toggle">
+                            <img src="{{ asset('images/eye2-icon.png') }}" alt="Показать пароль" class="register-eye-icon">
                         </button>
                     </div>
                     <div id="passwordRepeatStatus" class="input-status"></div>

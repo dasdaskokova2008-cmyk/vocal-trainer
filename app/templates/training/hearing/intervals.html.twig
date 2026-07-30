@@ -51,9 +51,9 @@
             </div>
         </div>
         
-        <div style="margin-top: 20px; text-align: center;">
-            <button onclick="openIntervalTheory()" class="btn-theory" style="padding: 1.2vh 4vh; font-size: clamp(16px, 2vh, 24px); font-weight: 700; color: white; background: linear-gradient(135deg, #6c5ce7, #4a9eff); border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);">
-                <img src="{{ asset('images/book-icon.png') }}" alt="Теория" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 0.8vh;">
+        <div class="intervals-theory-wrapper">
+            <button onclick="openIntervalTheory()" class="btn-theory">
+                <img src="{{ asset('images/book-icon.png') }}" alt="Теория" class="intervals-btn-icon">
                 Теория интервалов
             </button>
         </div>
@@ -66,7 +66,7 @@
             </div>
             <span class="progress-text" id="progressText">0 из 10</span>
             <span class="score-text" id="scoreText">
-                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" style="width: 2.5vh; height: 2.5vh; object-fit: contain; display: inline-block; vertical-align: middle;">
+                <img src="{{ asset('images/star-icon.png') }}" alt="Баллы" class="intervals-star-icon">
                 0 баллов
             </span>
         </div>
@@ -101,7 +101,7 @@
             </div>
 
             <button class="btn-play-note" id="playIntervalBtn" onclick="playCurrentInterval()">
-                <img src="{{ asset('images/speaker-icon.png') }}" alt="Воспроизвести" style="width: 4vh; height: 4vh; object-fit: contain;">
+                <img src="{{ asset('images/speaker-icon.png') }}" alt="Воспроизвести" class="intervals-speaker-icon">
             </button>
 
             <div class="interval-grid">
@@ -157,7 +157,7 @@
     <div id="resultScreen" class="result-screen" style="display: none;">
         <div class="result-header">
             <h2 class="result-title">
-                <img src="{{ asset('images/trophy-icon.png') }}" alt="Завершено" style="width: 4vh; height: 4vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+                <img src="{{ asset('images/trophy-icon.png') }}" alt="Завершено" class="intervals-trophy-icon">
                 Тренировка завершена!
             </h2>
         </div>
@@ -196,10 +196,10 @@
 
 <div id="theoryModal" class="modal" style="display: none;">
     <div class="modal-overlay" onclick="closeIntervalTheory()"></div>
-    <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+    <div class="modal-content intervals-modal-lg">
         <button class="modal-close" onclick="closeIntervalTheory()">✕</button>
         <h2 class="modal-title">
-            <img src="{{ asset('images/book-icon.png') }}" alt="Теория" style="width: 4vh; height: 4vh; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 1vh;">
+            <img src="{{ asset('images/book-icon.png') }}" alt="Теория" class="intervals-title-icon">
             Теория интервалов
         </h2>
         <div id="theoryContent"></div>
